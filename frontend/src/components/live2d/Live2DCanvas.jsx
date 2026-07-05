@@ -1,0 +1,103 @@
+import { useEffect, useRef } from "react";
+import { LAppDelegate } from "../../live2d/app/lappdelegate";
+
+
+export default function Live2DCanvas(){
+
+    const canvasRef = useRef(null);
+
+
+    useEffect(()=>{
+
+
+        console.log("CANVAS START");
+
+
+        const delegate =
+            LAppDelegate.getInstance();
+
+        console.log("Initialize Live2D");
+        delegate.initialize();
+
+        console.log("Run Live2D");
+        delegate.run();
+
+
+        const subdelegate =
+        delegate.getSubdelegate();
+
+
+        const manager =
+        subdelegate.getLive2DManager();
+
+
+        const model =
+        manager.getModel();
+
+
+        window.live2dModel = model;
+
+
+        console.log(
+            "MODEL GLOBAL =",
+            window.live2dModel
+        );
+
+
+        setTimeout(()=>{
+
+
+            const manager =
+                delegate.getLive2DManager();
+
+
+
+            const model =
+                manager.getModel();
+
+
+
+            window.live2dModel =
+                model;
+
+
+
+            console.log(
+                "LIVE2D CONNECTED",
+                model
+            );
+
+
+        },1500);
+
+
+
+    },[]);
+
+
+    return (
+
+        <div className="live2d-container">
+
+            <img
+                src="/bg/room.jpg"
+                alt="background"
+                className="live2d-background"
+            />
+
+            <canvas
+
+                id="live2d"
+
+                ref={canvasRef}
+
+                className="live2d-canvas"
+
+            />
+
+        </div>
+
+    
+
+    );
+}

@@ -1,0 +1,151 @@
+.memory-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    margin-top:20px;
+
+}
+
+.memory-card{
+
+    background:#181818;
+
+    border-radius:12px;
+
+    padding:16px;
+
+}
+
+.memory-key{
+
+    font-size:13px;
+
+    color:#888;
+
+    margin-bottom:6px;
+
+}
+
+.memory-value{
+
+    font-size:18px;
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+.memory-actions{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:12px;
+
+}
+
+.memory-actions button{
+
+    background:#272727;
+
+    border:none;
+
+    color:white;
+
+    padding:8px 12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.memory-actions button:hover{
+
+    background:#3a3a3a;
+
+}
+
+.memory-overlay{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.55);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:999;
+
+}
+
+.memory-modal{
+
+background:#181818;
+
+padding:24px;
+
+border-radius:16px;
+
+width:420px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+.memory-modal input{
+
+background:#252525;
+
+border:none;
+
+padding:12px;
+
+border-radius:10px;
+
+color:white;
+
+}
+
+.memory-actions{
+
+display:flex;
+
+justify-content:flex-end;
+
+gap:10px;
+
+margin-top:10px;
+
+}
+
+.memory-actions button{
+
+background:#272727;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:10px;
+
+color:white;
+
+cursor:pointer;
+
+}
