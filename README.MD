@@ -119,6 +119,8 @@ Tidak perlu mengubah React Component.
 ---
 
 # Menjalankan
+cd /d C:\cloudflared
+cd /d C:\Users\INFINIX\Desktop\Isekai_Gate\backend
 
 Frontend
 

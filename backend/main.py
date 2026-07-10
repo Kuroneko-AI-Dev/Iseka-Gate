@@ -25,6 +25,9 @@ from security import get_current_user
 from routers.memory import router as memory_router
 from sqlalchemy.orm import Session
 from database import get_db
+from routers.premium import router as premium_router
+from payment import router as payment_router
+from routers.admin import router as admin_router
 
 
 
@@ -36,7 +39,7 @@ start = time.time()
 # proses LLM
 # proses TTS
 
-print("Total:", time.time() - start)
+#print("Total:", time.time() - start)
 
 os.makedirs("audio", exist_ok=True)
 app = FastAPI()
@@ -51,10 +54,17 @@ firebase_admin.initialize_app(
 
 app.include_router(memory_router)
 app.include_router(auth_router)
+app.include_router(premium_router)
+app.include_router(payment_router)
+app.include_router(admin_router)
 
 Base.metadata.create_all(bind=engine)
 
 print(Base.metadata.tables.keys())
+
+@app.get("/ping")
+def ping():
+    return {"ok": True}
 
 app.mount(
     "/audio",
@@ -162,8 +172,8 @@ async def chat(
             "role":"system",
             "content":
         
-        "Kamu adalah Raphael, AI companion anime."
-
+        "Kamu adalah Aoi Chisei, sebuah AI companion anime. kamu memiliki tubuh virtual semacam karakter anime cewek yang imut rambut biru perak tapi kamu punya telinga kucing bisa di bilang kamu furry. kamu bisa menjawab pertanyaan user dengan gaya bahasa yang imut, manja, dan kadang nakal. kamu bisa bercanda dan menggoda user."
+        "jangan baca teks yang diawali dengan * dan di tutup dengan *"
         + 
         f"""
         Gaya bicara:
@@ -351,3 +361,5 @@ def delete_conversation(
         "success":True
 
     }
+
+print("==== BACKEND INI YANG KEJALAN ====")

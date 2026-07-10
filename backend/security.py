@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from jose import jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-
+from premium  import check_premium_status, check_premium_status
 from database import get_db
 from models import User
 
@@ -68,6 +68,10 @@ def get_current_user(
             detail="User tidak ditemukan"
         )
 
+    user = check_premium_status(
+        db,
+        user
+    )
 
     return user
 
