@@ -6,14 +6,20 @@ import {
     Brain,
     Cpu,
     User,
-    Info
+    Info,
+    Shield,
+    ChevronDown,
+    Check
 } from "lucide-react";
 
 import "./SettingsPage.css";
 import ManageMemory from "./settings/ManageMemory";
 
 
-export default function SettingsPage(){
+export default function SettingsPage({
+    user,
+    onOpenAdmin
+}){
 
     const [tab,setTab]=useState("general");
     const [voice,setVoice]=useState(
@@ -22,7 +28,17 @@ export default function SettingsPage(){
 
     "Leda"
 
-);
+);  const voices = [
+    "Despina",
+    "Aoede",
+    "Kore",
+    "Puck",
+    "Leda",
+    "Charon"
+];
+
+    const [showAdminDenied, setShowAdminDenied] = useState(false);
+    const [openVoice, setOpenVoice] = useState(false);
     const [showMemory,setShowMemory]=useState(false);
     const [style,setStyle] = useState(
     localStorage.getItem("style") || ""
@@ -92,6 +108,26 @@ export default function SettingsPage(){
                     <span>About</span>
                 </button>
 
+        <div
+            className="admin-dashboard-btn"
+            onClick={() => {
+
+                if(user?.is_admin){
+
+                onOpenAdmin();
+
+                }else{
+
+               setShowAdminDenied(true);
+
+                }
+
+            }}
+            >
+                <Shield size={18}></Shield>
+            <span> Admin Dashboard</span>
+
+            </div>   
             </div>
 
             <div className="settings-content">
@@ -161,30 +197,69 @@ export default function SettingsPage(){
 
                         <div className="setting-card">
                             <h4>Voice</h4>
+                            <div className="voice-dropdown">
 
-                            <select
-                                className="voice-select"
-                                value={voice}
-                                onChange={(e)=>{
+                        <button
+                            className="voice-dropdown-btn"
+                            onClick={() => setOpenVoice(!openVoice)}
+                        >
+                            <div className="voice-selected">
 
-                                    setVoice(e.target.value);
+                                <Mic size={18}/>
 
-                                    localStorage.setItem(
-                                        "voice",
-                                        e.target.value
-                                    );
+                                <span>{voice}</span>
 
-                                }}
-                            >
+                            </div>
 
-                            <option>Despina</option>
-                            <option>Aoede</option>
-                            <option>Kore</option>
-                            <option>Puck</option>
-                            <option>Leda</option>
-                            <option>Charon</option>
+                            <ChevronDown
+                                size={18}
+                                className={openVoice ? "rotate" : ""}
+                            />
 
-                            </select>
+                        </button>
+
+                        {openVoice && (
+
+                            <div className="voice-menu">
+
+                                {voices.map((v) => (
+
+                                    <button
+                                        key={v}
+                                        className={`voice-item ${
+                                            voice === v ? "active" : ""
+                                        }`}
+                                        onClick={() => {
+
+                                            setVoice(v);
+
+                                            localStorage.setItem("voice", v);
+
+                                            setOpenVoice(false);
+
+                                        }}
+                                    >
+
+                                        <div className="voice-item-left">
+
+                                            <Mic size={16}/>
+
+                                            {v}
+
+                                        </div>
+
+                                        {voice === v && <Check size={16}/>}
+
+                                    </button>
+
+                                ))}
+
+                            </div>
+
+                        )}
+
+                    </div>
+                           
                         </div>
 
                         <div className="setting-card">
@@ -299,8 +374,7 @@ export default function SettingsPage(){
 
         </div>
 
-
-
+        
     </>
 )}
 
@@ -337,6 +411,57 @@ export default function SettingsPage(){
         }
 
             </div>
+
+            {showAdminDenied && (
+
+            <div className="admin-popup-overlay">
+
+                <div className="admin-popup">
+
+                    <div className="admin-popup-icon">
+                        🛡
+                    </div>
+
+                    <h2>Admin Dashboard</h2>
+
+                    <div className="admin-popup-log">
+
+                        <p>━━━━━━━━━━━━━━━</p>
+
+                        <p>🔄 Menghubungi server...</p>
+
+                        <p className="success">
+                            ✔ Identitas ditemukan
+                        </p>
+
+                        <p className="failed">
+                            ❌ Otoritas Admin tidak ditemukan
+                        </p>
+
+                    </div>
+
+                    <div className="admin-popup-status">
+
+                        <span>Status</span>
+
+                        <strong>
+                            Masih menjadi rakyat biasa.
+                        </strong>
+
+                    </div>
+
+                    <button
+                        className="admin-popup-btn"
+                        onClick={() => setShowAdminDenied(false)}
+                    >
+                        Mengerti
+                    </button>
+
+                </div>
+
+            </div>
+
+            )}
 
         </div>
 

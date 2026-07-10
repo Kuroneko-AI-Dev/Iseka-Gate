@@ -3,7 +3,11 @@ import {
   Mic,
   Eye,
   Brain,
-  MapPin
+  MapPin,
+  MessageCircle, 
+  Heart,
+  Volume2,
+  Sparkles
 } from "lucide-react";
 export default function ChatPanel({
   messages,
@@ -24,37 +28,51 @@ export default function ChatPanel({
 
   {messages.length === 0 ? (
 
-    <div className="welcome-screen">
+   <div className="welcome-screen">
 
-      <h2>Hi, I'm Aoi</h2>
+  <h2>Welcome, I'm Aoi ✨</h2>
 
-      <p>I can help you with:</p>
+  <p>
+    Your AI companion is ready.
+  </p>
 
-      <div className="welcome-features">
 
-        <div className="feature-card">
-            <Mic size={20}/>
-             <span>Voice Chat</span>
-        </div>
+  <div className="welcome-features">
 
-        <div className="feature-card">
-           <Eye size={20}/>
-           <span>Vision</span>
-        </div>
-
-        <div className="feature-card">
-          <Brain size={20}/>
-          <span>Memory</span>
-        </div>
-
-        <div className="feature-card">
-          <MapPin size={20}/>
-          <span>Navigation</span>
-        </div>
-
-      </div>
-
+    <div className="feature-card">
+      <MessageCircle size={20}/>
+      <span>
+        Talk with Aoi
+      </span>
     </div>
+
+
+    <div className="feature-card">
+      <Heart size={20}/>
+      <span>
+        Remember your story
+      </span>
+    </div>
+
+
+    <div className="feature-card">
+      <Volume2 size={20}/>
+      <span>
+        Natural Voice
+      </span>
+    </div>
+
+
+    <div className="feature-card">
+      <Sparkles size={20}/>
+      <span>
+        Anime Personality
+      </span>
+    </div>
+
+  </div>
+
+</div>
 
   ) : (
 

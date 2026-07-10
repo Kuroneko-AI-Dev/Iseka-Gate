@@ -22,6 +22,36 @@ export default function Live2DCanvas(){
         console.log("Run Live2D");
         delegate.run();
 
+         const canvas = canvasRef.current;
+            if (!canvas) return;
+
+            // 🔥 FIX MOBILE INPUT
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+            };
+
+        // 🔥 IMPORTANT: attach input ke canvas
+        canvas.addEventListener("pointerdown", (e) => {
+            delegate.onPointerDown?.(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener("pointermove", (e) => {
+            delegate.onPointerMove?.(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener("pointerup", (e) => {
+            delegate.onPointerUp?.(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener("pointerleave", (e) => {
+            delegate.onPointerUp?.(e.clientX, e.clientY);
+        });
+
 
         const subdelegate =
         delegate.getSubdelegate();

@@ -1,27 +1,34 @@
 import { useState, useEffect } from "react";
+import SplashScreen from "./components/SplashScreen";
 import { getProfile } from "./api/user";
+
+import AdminDashboard from "./pages/AdminDashboard";
 import {
   sendMessage,
   getConversations,
   getMessages,
   renameConversation,
-  deleteConversation
+  deleteConversation,
+  activatePremium,
+  createPayment
 } from "./api";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import SettingsPage from "./pages/SettingsPage";
 import AvatarStage from "./components/AvatarStage";
 import ChatPanel from "./components/ChatPanel";
-import { Menu } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import {
   MessageCircle,
   Eye,
   Brain,
   Mic,
-  Settings
+  Settings,
+  Crown,House
 } from "lucide-react";
 import { API_URL } from "./config";
 import "./App.css";
+import PremiumModal from "./components/PremiumModal";
 
 
 export default function App() {
@@ -44,8 +51,43 @@ export default function App() {
     !!localStorage.getItem("token")
   );
 
-
+  const [showPremium,setShowPremium]=useState(false);
   const [page, setPage] = useState("login");
+  const [loading,setLoading]=useState(false);
+  const [enter,setEnter]=useState(false);
+
+
+const isStandalone =
+window.matchMedia("(display-mode: standalone)").matches ||
+window.navigator.standalone === true;
+/*useeffect time*/
+useEffect(()=>{
+
+    if(isStandalone){
+
+        setLoading(true);
+
+
+        const timer=setTimeout(()=>{
+
+            setEnter(true);
+
+
+            setTimeout(()=>{
+
+                setLoading(false);
+
+            },800);
+
+
+        },2500);
+
+
+        return ()=>clearTimeout(timer);
+
+    }
+
+},[]);
 
 
   const [user, setUser] = useState(()=>{
@@ -56,6 +98,21 @@ export default function App() {
       : null;
   });
 
+   function resetChatState() {
+
+    setMessages([]);
+    setConversationId(null);
+    setConversations([]);
+    setActiveChat(null);
+    setShowHistory(false);
+    setMenuChatId(null);
+    setRenameChat(null);
+    setRenameText("");
+    setDeleteChat(null);
+    setInput("");
+    setCurrentPage("chat");
+
+  }
 
 
   // ambil data user dari backend
@@ -196,7 +253,11 @@ export default function App() {
 
 
 
+  if(loading){
 
+      return <SplashScreen enter={enter}/>;
+
+  }
 
   // belum login
   if(!isLoggedIn){
@@ -253,12 +314,14 @@ export default function App() {
 
 
 
-
+  if (user?.is_admin && currentPage === "admin") {
+    return <AdminDashboard />;
+}
 
 
   return (
 
-    <div className="app">
+    <div className={`app ${isStandalone ? "standalone" : ""}`}>
 
 
 
@@ -275,69 +338,65 @@ export default function App() {
 
         </div>
 
+      <div className="menu">
 
-       <div className="menu">
 
-      <button
-        onClick={() => {
+        <button
+          onClick={() => {
 
             setConversationId(null);
-
             setMessages([]);
-
             setActiveChat(null);
-
             setShowHistory(false);
 
-        }}
-    >
-        <MessageCircle />
-    </button>
+          }}
+        >
+          <MessageCircle />
+        </button>
 
 
-  <button>
-    <Eye />
-  </button>
+        <button
+          className="brain-menu"
+          onClick={()=>{
+            setShowHistory(!showHistory)
+          }}
+        >
+          <Brain />
+        </button>
 
 
-  <button
-    className="brain-menu"
-    onClick={()=>{
-      setShowHistory(!showHistory)
-    }}
-  >
-    <Brain />
-  </button>
+        <button
+          onClick={()=>{
+            setShowPremium(true);
+          }}
+        >
+          <Crown />
+        </button>
 
 
+        <button
+          onClick={() => {
 
-  <button>
-    <Mic />
-  </button>
+            if(currentPage==="settings"){
 
-    <button
-        onClick={() => {
+                setCurrentPage("chat");
 
-    if(currentPage==="settings"){
+            }else{
 
-        setCurrentPage("chat");
+                setCurrentPage("settings");
 
-    }else{
+                setShowHistory(false);
 
-        setCurrentPage("settings");
+            }
 
-        setShowHistory(false);
+          }}
+        >
+          <Settings />
+        </button>
 
-    }
 
-}}
-    >
-        <Settings />
-    </button>
-  
-
-</div>
-        
+        </div>
+              
         <div className="account-section">
 
 
@@ -377,7 +436,26 @@ export default function App() {
                 }
                 {" "}PLAN
 
+                 
               </div>
+
+               <button
+                      className="premium-btn"
+                     onClick={async()=>{
+
+                        setShowPremium(true);
+                      
+                        const result = await createPayment("monthly");
+
+                        console.log(result);
+
+                        alert(result.message);
+
+                    }}
+                                      >
+                      Upgrade
+                  </button>
+
 
 
 
@@ -391,31 +469,33 @@ export default function App() {
 
               className="signin-btn"
 
+              onClick={() => {
 
-              onClick={()=>{
-
-
-                localStorage.removeItem(
-                  "token"
-                );
-
-
-                localStorage.removeItem(
-                  "user"
-                );
-
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
 
                 setUser(null);
-
-
                 setIsLoggedIn(false);
 
+                // Reset semua state chat
+                setMessages([]);
+                setConversationId(null);
+                setConversations([]);
+                setActiveChat(null);
+                setShowHistory(false);
+                setMenuChatId(null);
+                setRenameChat(null);
+                setDeleteChat(null);
+                setInput("");
+                setCurrentPage("chat");
 
-              }}
-
+            }}
             >
+              <LogOut size={16} />
 
-              Logout
+               <span>Logout</span>
+
+              
 
             </button>
 
@@ -617,12 +697,14 @@ export default function App() {
 
           <div className="chat-column">
 
-  <button
-    className="mobile-menu-btn"
-    onClick={() => setShowMobileMenu(!showMobileMenu)}
-  >
-    <Menu size={24} />
-  </button>
+            {currentPage !== "settings" && (
+              <button
+                  className="mobile-menu-btn"
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+              >
+                  <Menu />
+              </button>
+          )}
 
   <ChatPanel
     messages={messages}
@@ -639,10 +721,14 @@ export default function App() {
         className="settings-back"
         onClick={() => setCurrentPage("chat")}
       >
-        ← Back
+        <House size={18} />
+        Home
       </button>
 
-      <SettingsPage />
+      <SettingsPage
+          user={user}
+          onOpenAdmin={() => setCurrentPage("admin")}
+      />
 
     </div>
   )}
@@ -671,9 +757,14 @@ export default function App() {
       <span>History</span>
     </button>
 
-    <button>
-      <Mic size={18}/>
-      <span>Voice</span>
+    <button
+      onClick={()=>{
+        setShowPremium(true);
+        setShowMobileMenu(false);
+      }}
+    >
+      <Crown size={18}/>
+      <span>Premium</span>
     </button>
 
     <button onClick={()=>{
@@ -828,8 +919,27 @@ export default function App() {
 
 )}
 
+  <PremiumModal
+    open={showPremium}
+    onClose={() => setShowPremium(false)}
+    user={user}
+    onUpgrade={async () => {
 
+        await activatePremium();
 
+        const profile = await getProfile();
+
+        setUser(profile);
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(profile)
+        );
+
+        setShowPremium(false);
+
+    }}
+/>
 
 
 

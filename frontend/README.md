@@ -525,9 +525,12 @@ Solusi
 Menjalankan
 
 uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 
 ## jika terjadi fliker fix di file lappsubdelegate
 
 // 画面の初期化
     gl.clearColor(0.0, 0.0, 0.0, 0.1);
+
+

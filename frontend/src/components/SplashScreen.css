@@ -1,0 +1,756 @@
+.splash{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    radial-gradient(
+        circle at center,
+        #12345a,
+        #020617 75%
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    color:white;
+
+}
+
+
+
+/* cahaya belakang */
+
+.splash-glow{
+
+    position:absolute;
+
+    width:350px;
+
+    height:350px;
+
+    background:#22d3ee;
+
+    filter:blur(120px);
+
+    opacity:.45;
+
+    animation:pulse 3s infinite;
+
+}
+
+
+
+
+
+/* isi loading */
+
+.splash-content{
+
+    position:relative;
+
+    z-index:2;
+
+    text-align:center;
+
+    padding:20px;
+
+    animation:appear 1.2s ease;
+
+}
+
+
+
+
+
+/* logo torii */
+
+.torii-logo{
+
+    width:150px;
+
+    height:150px;
+
+    object-fit:contain;
+
+
+    filter:
+    drop-shadow(0 0 25px #38bdf8)
+    drop-shadow(0 0 60px #22d3ee);
+
+
+    animation:
+    float 4s infinite ease-in-out;
+
+
+    will-change:transform;
+
+}
+
+
+
+
+
+/* judul */
+
+.splash h1{
+
+    margin-top:15px;
+
+    font-size:34px;
+
+    letter-spacing:6px;
+
+    font-weight:700;
+
+}
+
+
+
+
+
+.subtitle{
+
+    margin-top:5px;
+
+    color:#67e8f9;
+
+    font-size:16px;
+
+}
+
+
+
+
+
+.loading-text{
+
+    margin-top:60px;
+
+    font-size:14px;
+
+    color:#cbd5e1;
+
+}
+
+
+
+
+
+/* progress */
+
+.progress{
+
+    width:230px;
+
+    height:4px;
+
+    margin:15px auto;
+
+    background:#1e293b;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+
+
+.progress-bar{
+
+    height:100%;
+
+    width:20%;
+
+    background:#38bdf8;
+
+
+    box-shadow:
+
+    0 0 15px #38bdf8,
+
+    0 0 30px #22d3ee;
+
+
+    animation:load 2.5s infinite;
+
+}
+
+
+
+
+
+
+
+/* =========================
+      PORTAL ENTER
+========================= */
+
+
+.portal-transition{
+
+    position:fixed;
+
+    inset:0;
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    background:black;
+
+
+    z-index:20;
+
+
+    overflow:hidden;
+
+}
+
+
+
+
+
+.portal-transition img{
+
+
+    width:300px;
+
+    height:300px;
+
+
+    object-fit:contain;
+
+
+    animation:
+
+    portalEnter .9s cubic-bezier(.7,0,.2,1) forwards;
+
+
+    filter:
+
+    drop-shadow(0 0 40px white);
+
+
+    will-change:transform;
+
+}
+
+
+
+
+
+
+
+/* cahaya ledakan */
+
+.portal-flash{
+
+
+    position:absolute;
+
+
+    inset:-50%;
+
+
+    background:white;
+
+
+    opacity:0;
+
+
+    animation:
+
+    flashLight 1s ease forwards;
+
+
+    animation-delay:.55s;
+
+
+
+    filter:
+
+    blur(40px);
+
+}
+
+
+
+
+
+
+/* zoom masuk portal */
+
+@keyframes portalEnter{
+
+
+    0%{
+
+        transform:scale(1);
+
+        filter:
+        brightness(1)
+        drop-shadow(0 0 40px white);
+
+    }
+
+
+
+    50%{
+
+        transform:scale(8);
+
+
+        filter:
+
+        brightness(2)
+        drop-shadow(0 0 100px white);
+
+    }
+
+
+
+    80%{
+
+        transform:scale(18);
+
+
+        filter:
+
+        brightness(5)
+        drop-shadow(0 0 200px white);
+
+    }
+
+
+
+    100%{
+
+        transform:scale(35);
+
+
+        filter:
+
+        brightness(10)
+        drop-shadow(0 0 300px white);
+
+    }
+
+
+}
+
+
+
+
+
+
+
+/* ledakan cahaya putih */
+
+@keyframes flashLight{
+
+
+    0%{
+
+        opacity:0;
+
+        transform:scale(.3);
+
+    }
+
+
+
+    60%{
+
+        opacity:0;
+
+    }
+
+
+
+    75%{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+
+
+    85%{
+
+        opacity:1;
+
+    }
+
+
+
+    100%{
+
+        opacity:0;
+
+        transform:scale(3);
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+        ANIMASI UMUM
+========================= */
+
+
+@keyframes load{
+
+
+    0%{
+
+        width:10%;
+
+    }
+
+
+    50%{
+
+        width:70%;
+
+    }
+
+
+    100%{
+
+        width:100%;
+
+    }
+
+}
+
+
+
+
+
+@keyframes appear{
+
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+
+
+
+@keyframes float{
+
+
+    0%,100%{
+
+        transform:translateY(0);
+
+    }
+
+
+    50%{
+
+        transform:translateY(-10px);
+
+    }
+
+
+}
+
+
+
+
+
+@keyframes pulse{
+
+
+    0%,100%{
+
+        transform:scale(1);
+
+    }
+
+
+    50%{
+
+        transform:scale(1.4);
+
+    }
+
+}
+
+
+
+
+
+
+
+/* =========================
+          MOBILE
+========================= */
+
+
+@media(max-width:768px){
+
+
+    .torii-logo{
+
+        width:120px;
+
+        height:120px;
+
+    }
+
+
+
+    .splash h1{
+
+        font-size:26px;
+
+        letter-spacing:4px;
+
+    }
+
+
+
+    .subtitle{
+
+        font-size:14px;
+
+    }
+
+
+
+    .loading-text{
+
+        margin-top:40px;
+
+    }
+
+
+
+    .progress{
+
+        width:200px;
+
+    }
+
+
+
+    .portal-transition img{
+
+        width:220px;
+
+        height:220px;
+
+    }
+
+
+}
+
+
+
+
+
+
+@media(max-height:600px){
+
+
+    .torii-logo{
+
+        width:100px;
+
+        height:100px;
+
+    }
+
+
+    .loading-text{
+
+        margin-top:25px;
+
+    }
+
+
+}
+
+/* ==========================
+      APP TITLE
+========================== */
+
+.app-title{
+
+    margin-top:18px;
+
+    font-size:42px;
+
+    font-weight:800;
+
+    letter-spacing:8px;
+
+    text-transform:uppercase;
+
+    color:#ffffff;
+
+    text-shadow:
+        0 0 10px rgba(56,189,248,.8),
+        0 0 25px rgba(34,211,238,.7),
+        0 0 60px rgba(34,211,238,.35);
+
+    animation:
+        titleGlow 2.8s ease-in-out infinite,
+        titleAppear 1s ease;
+}
+
+/* subtitle */
+
+.subtitle{
+
+    margin-top:10px;
+
+    font-size:17px;
+
+    font-weight:500;
+
+    letter-spacing:3px;
+
+    color:#7dd3fc;
+
+    text-shadow:
+        0 0 15px rgba(34,211,238,.5);
+
+    animation:
+        subtitleFade 1.3s ease;
+}
+
+/* ==========================
+      MOBILE
+========================== */
+
+@media(max-width:768px){
+
+    .app-title{
+
+        font-size:30px;
+
+        letter-spacing:5px;
+
+    }
+
+    .subtitle{
+
+        font-size:14px;
+
+        letter-spacing:2px;
+
+    }
+
+}
+
+/* ==========================
+      ANIMATION
+========================== */
+
+@keyframes titleGlow{
+
+    0%,100%{
+
+        text-shadow:
+            0 0 8px rgba(56,189,248,.7),
+            0 0 25px rgba(34,211,238,.6),
+            0 0 45px rgba(34,211,238,.3);
+
+    }
+
+    50%{
+
+        text-shadow:
+            0 0 18px rgba(255,255,255,.9),
+            0 0 40px rgba(56,189,248,1),
+            0 0 80px rgba(34,211,238,.9);
+
+    }
+
+}
+
+@keyframes titleAppear{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(20px)
+            scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+@keyframes subtitleFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}

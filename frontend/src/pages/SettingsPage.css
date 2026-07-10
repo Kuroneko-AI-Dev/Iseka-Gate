@@ -1,3 +1,52 @@
+
+/* ===========================
+   REMOVE MOBILE TAP HIGHLIGHT
+=========================== */
+
+html,
+body,
+*{
+
+    -webkit-tap-highlight-color: transparent;
+
+}
+
+button,
+input,
+select,
+textarea,
+a{
+
+    outline:none;
+
+    -webkit-tap-highlight-color:transparent;
+
+}
+
+button:focus,
+button:focus-visible,
+input:focus,
+input:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+a:focus,
+a:focus-visible{
+
+    outline:none !important;
+    box-shadow:none !important;
+
+}
+
+
+
+
+
+
+
+
+
 .settings-page{
 
     display:flex;
@@ -7,9 +56,110 @@
 
     background:#121212;
 
-    border-radius:24px;
+    border-radius:20px;
 
     overflow:hidden;
+
+}
+
+/* ===========================
+   ADMIN DASHBOARD BUTTON
+=========================== */
+
+.admin-dashboard-btn{
+
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:14px 18px;
+
+    margin-top:18px;
+
+    border:none;
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.4px;
+
+    color:#fff;
+
+    background:linear-gradient(
+        135deg,
+        #7c3aed,
+        #5b21b6
+    );
+
+    box-shadow:
+        0 0 18px rgba(124,58,237,.35),
+        inset 0 1px 1px rgba(255,255,255,.15);
+
+    transition:.25s;
+}
+
+.admin-dashboard-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 28px rgba(124,58,237,.45),
+        0 0 30px rgba(139,92,246,.45);
+
+}
+
+.admin-dashboard-btn:active{
+
+    transform:scale(.98);
+
+}
+
+.admin-dashboard-btn svg{
+
+    width:18px;
+    height:18px;
+
+}
+
+.admin-dashboard-btn::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.15),
+        transparent
+    );
+
+    transform:translateX(-120%);
+
+    transition:.6s;
+
+}
+
+.admin-dashboard-btn{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.admin-dashboard-btn:hover::before{
+
+    transform:translateX(120%);
 
 }
 
@@ -24,8 +174,9 @@
     display:flex;
 
     flex-direction:column;
+    
 
-    gap:8px;
+    gap:10px;
 
     background:#171717;
 
@@ -68,6 +219,7 @@
     flex:1;
 
     padding:35px;
+    
 
     overflow-y:auto;
 
@@ -394,7 +546,7 @@ input[type="range"]{
 
   .settings-sidebar{
       width:100%;
-      padding:10px;
+      padding:5px;
       border-right:none;
       border-bottom:1px solid #252525;
 
@@ -412,7 +564,8 @@ input[type="range"]{
   }
 
   .settings-content{
-      padding:15px;
+      padding:10px 10px 35px;
+      box-sizing:border-box;
   }
 
   .settings-content h2{
@@ -421,8 +574,10 @@ input[type="range"]{
 
   .setting-card{
       margin-top:12px;
+    
       padding:14px;
       border-radius:12px;
+      box-sizing:border-box;
   }
 
   .setting-card h4{
@@ -434,9 +589,28 @@ input[type="range"]{
   }
 
   .voice-select{
-      height:40px;
-      font-size:13px;
-  }
+
+    width:100%;
+
+    height:46px;
+
+    margin-top:14px;
+
+    background:#222;
+
+    color:white;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:12px;
+
+    padding:0 14px;
+
+    font-size:14px;
+
+}
 
   .purple-btn{
       height:40px;
@@ -451,6 +625,544 @@ input[type="range"]{
   .memory-container{
       width:95%;
       padding:18px;
+      box-sizing:border-box;
   }
+
+}
+
+/* ===========================
+   VOICE DROPDOWN
+=========================== */
+
+.voice-dropdown{
+
+    position:relative;
+
+    margin-top:15px;
+
+}
+
+.voice-dropdown-btn{
+
+    width:100%;
+    height:48px;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:0 16px;
+
+    background:#1f1f1f;
+
+    color:white;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.voice-dropdown-btn:hover{
+
+    background:#292929;
+
+    box-shadow:0 0 18px rgba(53,166,223,.25);
+
+}
+
+.voice-selected{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.rotate{
+
+    transform:rotate(180deg);
+
+    transition:.25s;
+
+}
+
+.voice-menu{
+
+    position:absolute;
+
+    top:55px;
+
+    left:0;
+
+    width:100%;
+
+    background:#181818;
+
+    border:1px solid #2d2d2d;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.45);
+
+    z-index:50;
+
+}
+
+.voice-item{
+
+    width:100%;
+
+    height:46px;
+
+    border:none;
+
+    background:none;
+
+    color:#ddd;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 16px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.voice-item-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.voice-item:hover{
+
+    background:#262626;
+
+    color:white;
+
+}
+
+.voice-item.active{
+
+    background:#35a6df22;
+
+    color:#35a6df;
+
+}
+
+.voice-item.active svg{
+
+    color:#35a6df;
+
+}
+/* ===========================
+   ADMIN DASHBOARD BUTTON MOBILE
+=========================== */
+
+@media (max-width:768px){
+
+  .admin-dashboard-btn{
+
+      flex:1 0 auto;
+
+      min-width:60px;
+
+      height:40px;
+
+      padding:0 18px;
+
+      margin-top:0;
+
+      border-radius:12px;
+
+      font-size:13px;
+
+      white-space:nowrap;
+
+      gap:8px;
+
+  }
+
+
+  .admin-dashboard-btn svg{
+
+      width:16px;
+
+      height:16px;
+
+      flex-shrink:0;
+
+  }
+
+}
+
+@media (max-width:768px){
+
+    .voice-dropdown-btn{
+
+        height:42px;
+
+        font-size:13px;
+
+        border-radius:12px;
+
+    }
+
+    .voice-menu{
+
+        top:48px;
+
+        border-radius:12px;
+
+    }
+
+    .voice-item{
+
+        height:42px;
+
+        font-size:13px;
+
+        padding:0 14px;
+
+    }
+
+}
+
+/* ===========================
+   ADMIN POPUP
+=========================== */
+
+.admin-popup-overlay{
+
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(10px);
+
+    z-index:99999;
+
+    animation:fadeIn .25s;
+
+}
+
+.admin-popup{
+
+    width:430px;
+    max-width:92%;
+
+    padding:30px;
+
+    border-radius:22px;
+
+    background:#141414;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    text-align:center;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.55),
+    0 0 30px rgba(53,166,223,.18);
+
+    animation:popupShow .28s;
+
+}
+
+.admin-popup-icon{
+
+    width:72px;
+    height:72px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:36px;
+
+    background:linear-gradient(
+        135deg,
+        #35a6df,
+        #4f46e5
+    );
+
+    box-shadow:
+    0 0 25px rgba(53,166,223,.45);
+
+}
+
+.admin-popup h2{
+
+    margin:20px 0 15px;
+
+    color:white;
+
+    font-size:26px;
+
+}
+
+.admin-popup-log{
+
+    margin-top:15px;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    text-align:left;
+
+    background:#1d1d1d;
+
+}
+
+.admin-popup-log p{
+
+    margin:10px 0;
+
+    color:#cfcfcf;
+
+}
+
+.admin-popup-log .success{
+
+    color:#22c55e;
+
+    font-weight:600;
+
+}
+
+.admin-popup-log .failed{
+
+    color:#ef4444;
+
+    font-weight:600;
+
+}
+
+.admin-popup-status{
+
+    margin-top:22px;
+
+    padding:18px;
+
+    border-radius:14px;
+
+    background:#202020;
+
+}
+
+.admin-popup-status span{
+
+    display:block;
+
+    color:#999;
+
+    margin-bottom:8px;
+
+}
+
+.admin-popup-status strong{
+
+    color:#35a6df;
+
+    font-size:18px;
+
+}
+
+.admin-popup-btn{
+
+    margin-top:25px;
+
+    width:100%;
+    height:48px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+    font-weight:700;
+
+    color:white;
+
+    background:linear-gradient(
+        135deg,
+        #35a6df,
+        #2563eb
+    );
+
+    transition:.25s;
+
+}
+
+.admin-popup-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 10px 30px rgba(53,166,223,.35);
+
+}
+
+@keyframes popupShow{
+
+    from{
+
+        opacity:0;
+        transform:scale(.85);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:scale(1);
+
+    }
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+/* ===========================
+   ADMIN POPUP MOBILE
+=========================== */
+
+@media (max-width:768px){
+
+.admin-popup{
+
+    width:92%;
+
+    max-width:none;
+
+    padding:22px 18px;
+
+    border-radius:18px;
+
+}
+
+.admin-popup-icon{
+
+    width:58px;
+    height:58px;
+
+    font-size:28px;
+
+}
+
+.admin-popup h2{
+
+    margin:16px 0 12px;
+
+    font-size:21px;
+
+}
+
+.admin-popup-log{
+
+    margin-top:12px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+}
+
+.admin-popup-log p{
+
+    margin:8px 0;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    word-break:break-word;
+
+}
+
+.admin-popup-status{
+
+    margin-top:16px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+}
+
+.admin-popup-status span{
+
+    font-size:12px;
+
+}
+
+.admin-popup-status strong{
+
+    display:block;
+
+    margin-top:4px;
+
+    font-size:15px;
+
+}
+
+.admin-popup-btn{
+
+    width:100%;
+
+    height:44px;
+
+    margin-top:18px;
+
+    font-size:14px;
+
+    border-radius:12px;
+
+}
 
 }

@@ -36,8 +36,8 @@ export const ViewLogicalMaxTop = 2.0;
 export const ResourcesPath = '/live2d/';
 
 // シェーダー相対パス
-export const ShaderPath = './src/live2d/shaders/';
-
+//export const ShaderPath = './src/live2d/shaders/';
+export const ShaderPath = '/Framework/Shaders/WebGL/';//menggunakan static di backend
 // モデルの後ろにある背景の画像ファイル
 export const BackImageName = 'back_class_normal.png';
 

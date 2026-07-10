@@ -100,3 +100,44 @@ export async function deleteConversation(id){
     return await res.json();
 
 }
+
+export async function activatePremium() {
+
+  const response = await api.post(
+    "/premium/activate"
+  );
+
+  return response.data;
+
+}
+
+export async function getPremiumStatus() {
+
+  const response = await api.get(
+    "/premium/status"
+  );
+
+  return response.data;
+
+}
+
+export async function createPayment(plan){
+
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(
+        `${API_URL}/payment/create`,
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:`Bearer ${token}`
+            },
+            body:JSON.stringify({
+                plan
+            })
+        }
+    );
+
+    return res.json();
+}
