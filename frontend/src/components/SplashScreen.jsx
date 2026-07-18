@@ -1,91 +1,56 @@
 import { useEffect } from "react";
 import "./SplashScreen.css";
 
-export default function SplashScreen({enter}){
+export default function SplashScreen({ enter }) {
+
+    useEffect(() => {
+
+        const audio = new Audio("/audio/dodoco.mp3");
+
+        audio.loop = true;
+        audio.volume = 0.8;
+
+        audio.play()
+        .catch(err=>{
+            console.log("Audio blocked:", err);
+        });
+
+          const timer = setTimeout(()=>{
+
+            enter();
+
+        },17000);
 
 
-     useEffect(()=>{
+        return () => {
+            audio.pause();
+            audio.currentTime = 0;
+            clearTimeout(timer);
+        };
 
-        if(enter){
-
-            const audio = new Audio(
-                "/audio/portal.mp3"
-            );
-
-            audio.volume = 0.8;
-
-            audio.play()
-            .catch(err=>{
-                console.log("Audio blocked:",err);
-            });
-
-        }
+    }, []);
 
 
-    },[enter]);
-
-    return(
-
+    return (
         <div className="splash">
 
-
-            <div className="splash-glow"></div>
-
-
-            <div className="splash-content">
-
-
                 <img
-                    src="/assets/torii-gate.png"
+                    src="/assets/aoi-mobile.png"
                     className="torii-logo"
                     alt="Isekai Gate"
                 />
 
+          
 
-                <h1 className="app-title">
-                    ISEKAI GATE
-                </h1>
-
-
-                <p className="subtitle">
-                    AI Companion
-                </p>
-
-
-
-                <div className="loading-text">
-                    Loading your world...
-                </div>
+            <div className="splash-content">
 
 
                 <div className="progress">
-
                     <div className="progress-bar"></div>
-
                 </div>
 
-
             </div>
-
-
-            {enter && (
-
-            <div className="portal-transition">
-
-                <img
-                    src="/assets/torii-gate.png"
-                    className="portal-image"
-                    alt="Portal"
-                />
-
-                <div className="portal-flash"></div>
-
-            </div>
-
-        )}                                                                     
-
 
         </div>
-
-    )
+    );
 }

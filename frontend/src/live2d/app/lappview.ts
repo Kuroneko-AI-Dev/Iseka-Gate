@@ -195,11 +195,11 @@ export class LAppView {
     const posY = pointY * window.devicePixelRatio;
 
     const lapplive2dmanager = this._subdelegate.getLive2DManager();
-
+    this._touchManager.touchesMoved(posX, posY);
     const viewX: number = this.transformViewX(this._touchManager.getX());
     const viewY: number = this.transformViewY(this._touchManager.getY());
 
-    this._touchManager.touchesMoved(posX, posY);
+    
 
     lapplive2dmanager.onDrag(viewX, viewY);
   }

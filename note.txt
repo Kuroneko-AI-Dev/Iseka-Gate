@@ -39,3 +39,22 @@ frontend/dist
 ke Netlify.
 
 ganti juga domain yang berada di firebase
+
+
+uvicorn app:app --host 0.0.0.0 --port 9000
+ server whisper.cpp
+ build\bin\Release\whisper-server.exe ^
+-m models\ggml-small.bin ^
+--host 127.0.0.1 ^
+--port 8178 ^
+-l id ^
+--threads 6
+
+
+main harus ada https atau alamat web
+  allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://dense-tactics-outlined-sig.trycloudflare.com",
+        "https://isekaiport.pages.dev"
+    ],

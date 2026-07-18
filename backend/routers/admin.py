@@ -27,7 +27,10 @@ def get_current_admin(
     return current_user
 
 @router.get("/users")
-def get_users(db: Session = Depends(get_db)):
+def get_users(
+    admin: User = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
 
     users = db.query(User).all()
 
@@ -48,6 +51,7 @@ def get_users(db: Session = Depends(get_db)):
 def set_premium(
     user_id: int,
     is_premium: bool,
+    admin: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
     user = db.query(User).filter(User.id == user_id).first()
@@ -70,6 +74,7 @@ def set_premium(
 def set_ban(
     user_id: int,
     is_banned: bool,
+    admin: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
     user = db.query(User).filter(User.id == user_id).first()
@@ -92,7 +97,11 @@ def set_ban(
     }
 
 @router.delete("/user/{user_id}")
-def delete_user(user_id: int, db: Session = Depends(get_db)):
+def delete_user(
+    user_id: int,
+    admin: User = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
 
     user = db.query(User).filter(User.id == user_id).first()
 

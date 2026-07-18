@@ -294,6 +294,315 @@ html,body{
   border-radius:15px;
 }
 
+/* =========================
+   CHAT MESSAGE
+========================= */
+
+
+.message{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    margin-bottom:18px;
+
+    padding:14px 16px;
+
+    border-radius:16px;
+
+    line-height:1.6;
+
+    max-width:85%;
+
+    word-break:break-word;
+
+    animation:messageShow .2s ease;
+
+}
+
+
+
+@keyframes messageShow{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(5px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+
+/* USER MESSAGE */
+
+.message.user{
+
+    margin-left:auto;
+
+    background:#3f4445;
+
+    color:white;
+
+    border-bottom-right-radius:5px;
+
+}
+
+
+
+/* AI MESSAGE */
+
+.message.assistant{
+
+    margin-right:auto;
+
+    background:#222;
+
+    color:white;
+
+    border-bottom-left-radius:5px;
+
+}
+
+
+
+
+
+/* =========================
+   ROLE NAME
+========================= */
+
+
+.message-role{
+
+    margin-bottom:10px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    opacity:.7;
+
+}
+
+
+
+
+.message.user .message-role{
+
+    color:white;
+
+}
+
+
+
+.message.assistant .message-role{
+
+    color:#3acced;
+
+}
+
+
+
+
+
+/* =========================
+   MESSAGE CONTENT
+========================= */
+
+
+.message-content{
+
+    white-space:pre-wrap;
+
+    font-size:15px;
+
+}
+
+
+
+
+
+/* =========================
+   TRANSLATE BUTTON
+========================= */
+
+
+.translate-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+
+    margin-top:12px;
+
+
+    width:max-content;
+
+
+    border:none;
+
+    border-radius:10px;
+
+
+    padding:6px 12px;
+
+
+    background:#ac331b;
+
+
+    color:white;
+
+
+    font-size:12px;
+
+
+    cursor:pointer;
+
+}
+
+
+
+
+.translate-btn:hover{
+
+    opacity:.85;
+
+}
+
+
+
+
+
+/* =========================
+   TRANSLATION RESULT
+========================= */
+
+
+.translation{
+
+    margin-top:12px;
+
+    padding-top:12px;
+
+
+    border-top:1px solid rgba(255,255,255,.2);
+
+
+    font-size:14px;
+
+
+    opacity:.9;
+
+}
+
+
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media(max-width:768px){
+
+
+    .message{
+
+
+        max-width:92%;
+
+
+        padding:12px 14px;
+
+
+        margin-bottom:14px;
+
+
+        border-radius:14px;
+
+
+    }
+
+
+
+    .message-role{
+
+
+        margin-bottom:8px;
+
+
+        font-size:11px;
+
+
+    }
+
+
+
+    .message-content{
+
+
+        font-size:14px;
+
+
+        line-height:1.5;
+
+
+    }
+
+
+
+    .translate-btn{
+
+
+        padding:6px 10px;
+
+
+        font-size:11px;
+
+
+        margin-top:10px;
+
+
+    }
+
+
+
+    .translation{
+
+
+        font-size:13px;
+
+
+        margin-top:10px;
+
+
+        padding-top:10px;
+
+
+    }
+
+
+}
+
 .user{
   background:#3b3f49;
 
@@ -305,7 +614,44 @@ html,body{
 }
 
 /* BOTTOM */
+.recording-info{
 
+    position:absolute;
+
+    bottom:100px;
+    right:30px;
+    
+
+    background:#ce1208;
+
+    color:white;
+
+    padding:8px 14px;
+
+    border-radius:18px;
+
+    font-size:12px;
+
+    white-space:nowrap;
+
+
+}
+
+@media(max-width:768px){
+
+    .recording-info{
+
+        right:10px;
+
+        bottom:100px;
+
+        font-size:11px;
+
+        padding:7px 12px;
+
+    }
+
+}
 
 .bottom-bar{
     padding:12px;
@@ -2361,25 +2707,35 @@ z-index:100;
 
 
 /* Hanya berlaku untuk aplikasi (PWA) */
+@media (max-width:768px){
 
-.app.standalone .chat-column{
-    padding-bottom:40px;
-    height:100dvh;
+    .app.standalone{
+        height:100dvh;
+        overflow:hidden;
+    }
+
+    .app.standalone .chat-column{
+        height:100%;
+        padding-bottom:calc(env(safe-area-inset-bottom) + 12px);
+    }
+
+    .app.standalone .chat-panel{
+        display:flex;
+        flex-direction:column;
+        height:100%;
+    }
+
+    .app.standalone .messages{
+        flex:1;
+        min-height:0;
+        overflow-y:auto;
+    }
+
+    .app.standalone .bottom-bar{
+        margin-top:auto;
+        padding-bottom:env(safe-area-inset-bottom);
+    }
+
 }
 
-.app.standalone .chat-panel{
-    display:flex;
-    flex-direction:column;
-    height:100%;
-}
 
-.app.standalone .messages{
-    flex:1;
-    overflow-y:auto;
-}
-
-.app.standalone .bottom-bar{
-    margin-top:auto;
-    bottom:20px;
-    padding-bottom:calc(env(safe-area-inset-bottom) + 10px);
-}

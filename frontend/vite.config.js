@@ -24,9 +24,9 @@ export default defineConfig({
 
             manifest:{
 
-                name:"Isekai Gate",
+                name:"AOI CHISEI",
 
-                short_name:"Isekai",
+                short_name:"AOI",
 
                 description:"AI Companion",
 

@@ -16,10 +16,10 @@ export default function Live2DCanvas(){
         const delegate =
             LAppDelegate.getInstance();
 
-        console.log("Initialize Live2D");
+    
         delegate.initialize();
 
-        console.log("Run Live2D");
+    
         delegate.run();
 
          const canvas = canvasRef.current;
@@ -102,7 +102,11 @@ export default function Live2DCanvas(){
 
 
 
+
+
     },[]);
+
+
 
 
     return (

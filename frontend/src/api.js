@@ -141,3 +141,63 @@ export async function createPayment(plan){
 
     return res.json();
 }
+
+export async function translateText(text){
+
+    const response = await fetch(
+        `${API_URL}/translate`,
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":
+                `Bearer ${localStorage.getItem("token")}`
+            },
+
+            body:JSON.stringify({
+                text:text
+            })
+        }
+    );
+
+
+    return await response.json();
+
+}
+
+export async function researchWeb(query){
+    const response = await api.post("/research", {
+        query,
+        max_results: 5
+    });
+    return response.data;
+}
+
+
+
+export async function speechToText(audioBlob){
+
+    const formData = new FormData();
+
+    formData.append(
+        "file",
+        audioBlob,
+        "recording.wav"
+    );
+
+
+    const response = await api.post(
+        "/stt",
+        formData,
+        {
+            headers:{
+                "Content-Type":"multipart/form-data"
+            }
+        }
+    );
+
+
+    return response.data;
+
+}

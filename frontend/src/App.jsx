@@ -10,7 +10,8 @@ import {
   renameConversation,
   deleteConversation,
   activatePremium,
-  createPayment
+  createPayment,
+  researchWeb
 } from "./api";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -24,11 +25,13 @@ import {
   Brain,
   Mic,
   Settings,
-  Crown,House
+  Crown,House,Radio
 } from "lucide-react";
 import { API_URL } from "./config";
 import "./App.css";
 import PremiumModal from "./components/PremiumModal";
+import Live from "./components/live/Live";
+
 
 
 export default function App() {
@@ -38,6 +41,7 @@ export default function App() {
   const [messages, setMessages] = useState([]);
   const [activeChat,setActiveChat] = useState(null);
   const [input, setInput] = useState("");
+  const [researchMode, setResearchMode] = useState(false);
   const [conversationId,setConversationId] = useState(null);
   const [conversations,setConversations] = useState([]);
   const [showHistory,setShowHistory] = useState(false);
@@ -57,9 +61,13 @@ export default function App() {
   const [enter,setEnter]=useState(false);
 
 
+const isAndroid =
+    /Android/i.test(navigator.userAgent);
+
 const isStandalone =
-window.matchMedia("(display-mode: standalone)").matches ||
-window.navigator.standalone === true;
+(window.matchMedia("(display-mode: standalone)").matches ||
+window.navigator.standalone === true) &&
+isAndroid;
 /*useeffect time*/
 useEffect(()=>{
 
@@ -80,7 +88,7 @@ useEffect(()=>{
             },800);
 
 
-        },2500);
+        },17000);
 
 
         return ()=>clearTimeout(timer);
@@ -148,108 +156,163 @@ useEffect(()=>{
 },[isLoggedIn]);
 
 
-  async function handleSend(){
+ async function handleSend(textToSend = input){
 
 
-    if(!input.trim()) return;
+  if(typeof textToSend !== "string"){
+    console.log("INVALID SEND DATA:", textToSend);
+    return;
+  }
 
 
-    const userText = input;
+  if(!textToSend.trim()) return;
+
+
+  const userText = textToSend.trim();
+  setMessages(prev=>[
+    ...prev,
+    {
+      role:"user",
+      content:userText
+    }
+  ]);
+
+
+  setInput("");
+
+
+  let result;
+
+
+  try{
+
+
+    setIsTyping(true);
+
+
+    const voice =
+      localStorage.getItem("voice") || "Leda";
+
+    if (researchMode) {
+      result = await researchWeb(userText);
+      const sourceList = result.sources
+        .map((source, index) => `[${index + 1}] ${source.title}\n${source.url}`)
+        .join("\n\n");
+
+      setMessages(prev=>[
+        ...prev,
+        {
+          role:"assistant",
+          content:`${result.answer}\n\nSources:\n${sourceList}`
+        }
+      ]);
+      return;
+    }
+
+
+    result = await sendMessage(
+
+      userText,
+
+      conversationId,
+
+      voice
+
+    );
+
+    console.log("result dari backend:", result);
+
+
+    setConversationId(
+      result.conversation_id
+    );
+
+
+    const chats = await getConversations();
+
+    setConversations(chats);
+
 
 
     setMessages(prev=>[
       ...prev,
       {
-        role:"user",
-        content:userText
+        role:"assistant",
+        content:result.text
       }
     ]);
 
 
-    setInput("");
 
-
-
-    try{
-
-
-      setIsTyping(true);
-
-
-      const voice =
-
-        localStorage.getItem("voice") ||
-
-        "Leda";
-
-        const result = await sendMessage(
-
-            userText,
-
-            conversationId,
-
-            voice
-
-        );
-
-
-      setConversationId(
-        result.conversation_id
-      );
-      const chats = await getConversations();
-
-      setConversations(chats);
-
-      setIsTyping(false);
-
-
+    // tampilkan notif kokoro
+    if(result.tts_notice){
 
       setMessages(prev=>[
         ...prev,
         {
-          role:"assistant",
-          content:result.text
-        }
-      ]);
-
-
-
-      const audioUrl = `${API_URL}/${result.audio}`;
-
-      const audio = new Audio(audioUrl);
-
-
-      audio.play();
-
-
-      // SEND AUDIO TO LIVE2D LIPSYNC
-      if(window.live2dModel){
-
-          window.live2dModel.startLipSync(
-              audioUrl
-          );
-
-      }
-
-    
-
-
-
-    }catch{
-
-
-      setMessages(prev=>[
-        ...prev,
-        {
-          role:"assistant",
-          content:"Backend tidak terhubung."
+          role:"system",
+          content:result.tts_notice
         }
       ]);
 
     }
 
+
+
+    const audioUrl = result.audio.startsWith("http")
+      ? result.audio
+      : `${API_URL}/${result.audio}`;
+
+
+
+    const audio = new Audio(audioUrl);
+
+
+    audio.onerror = (e)=>{
+      console.log("Audio error:",e);
+    };
+
+
+    audio.play()
+    .catch(err=>{
+      console.log("Audio play blocked:",err);
+    });
+
+
+
+    if(window.live2dModel){
+
+      window.live2dModel.startLipSync(
+        audioUrl
+      );
+
+    }
+
+
+
+  }catch(error){
+
+
+    console.log("FRONTEND ERROR:",error);
+
+
+    setMessages(prev=>[
+      ...prev,
+      {
+        role:"assistant",
+        content:"Backend tidak terhubung."
+      }
+    ]);
+
+  }
+  finally{
+
+    setIsTyping(false);
+
   }
 
+
+}
 
 
 
@@ -318,6 +381,14 @@ useEffect(()=>{
     return <AdminDashboard />;
 }
 
+  if (currentPage === "live") {
+    return (
+        <Live
+            user={user}
+            onExit={() => setCurrentPage("chat")}
+        />
+    );
+}
 
   return (
 
@@ -392,6 +463,14 @@ useEffect(()=>{
           }}
         >
           <Settings />
+        </button>
+
+        <button
+            onClick={()=>{
+                setCurrentPage("live");
+            }}
+        >
+            <Radio />
         </button>
 
 
@@ -499,6 +578,7 @@ useEffect(()=>{
 
             </button>
 
+              
 
 
           </div>
@@ -555,6 +635,7 @@ useEffect(()=>{
 
        <div className="content">
 
+        
           <div className="avatar-column">
 
             {showHistory && (
@@ -696,6 +777,8 @@ useEffect(()=>{
           </div>
 
           <div className="chat-column">
+      
+
 
             {currentPage !== "settings" && (
               <button
@@ -712,6 +795,8 @@ useEffect(()=>{
     setInput={setInput}
     handleSend={handleSend}
     isTyping={isTyping}
+    researchMode={researchMode}
+    setResearchMode={setResearchMode}
   />
 
   {currentPage === "settings" && (
@@ -755,6 +840,15 @@ useEffect(()=>{
     }}>
       <Brain size={18}/>
       <span>History</span>
+    </button>
+
+    <button
+    onClick={()=>{
+        setCurrentPage("live");
+        setShowHistory(false);
+    }}
+    >
+        <Radio />
     </button>
 
     <button

@@ -1,0 +1,26 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+firebase_admin_key.json
+backend/firebase_admin_key.json
+
+# Dependencies and virtual environments
+node_modules/
+venv/
+**/venv/
+__pycache__/
+*.py[cod]
+
+# Runtime-generated media and logs
+audio/
+backend/audio/
+kokoro_service/audio/
+*.log
+
+# Build artifacts and editor files
+dist/
+build/
+.vite/
+.idea/
+.vscode/

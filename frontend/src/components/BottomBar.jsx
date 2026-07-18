@@ -1,21 +1,29 @@
 import {
   Camera,
   Mic,
-  Send
+  Send,
+  Search
 } from "lucide-react";
 import {useState} from "react";
-
+import {
+  speechToText
+} from "../api";
 
 export default function BottomBar({
   input,
   setInput,
-  handleSend
+  handleSend,
+  researchMode,
+  setResearchMode
 }) {
-
+ 
+  const [recording,setRecording] = useState(false);
+  const [recorder,setRecorder] = useState(null);
   const [popup, setPopup] = useState("");
   return (
     <div className="bottom-bar">
       <div className="chat-input-box">
+       
       <button
           onClick={()=>{
             setPopup("Vision Camera Coming Soon");
@@ -33,23 +41,94 @@ export default function BottomBar({
             handleSend();
             }
         }}
-        placeholder="Message Aoi..."
+        placeholder={researchMode ? "Ask Aoi to research the web..." : "Message Aoi..."}
         />
-        <button
-          onClick={()=>{
-            setPopup("Voice Chat Coming Soon");
-          }}
-        >
-          <Mic size={20} />
-       </button>
+
+         {
+          recording && (
+            <div className="recording-info">
+               Listening... Tekan Mic lagi untuk berhenti
+            </div>
+          )
+          }
+      <button
+  className={recording ? "mic-recording" : ""}
+  onClick={async()=>{
+
+
+  if(!recording){
+
+     
+
+      const stream =
+      await navigator.mediaDevices.getUserMedia({
+          audio:true
+      });
+
+      const mediaRecorder = new MediaRecorder(stream);
+
+      let chunks=[];
+
+
+      mediaRecorder.ondataavailable=e=>{
+          chunks.push(e.data);
+      };
+
+
+      mediaRecorder.onstop=async()=>{
+
+        setPopup("");
+
+        stream.getTracks().forEach((track)=>track.stop());
+
+
+        const blob = new Blob(chunks,{
+          type:"audio/webm"
+        });
+
+
+        const result = await speechToText(blob);
+
+
+        if(result?.text){
+          handleSend(String(result.text));
+        }
+
+      };
+
+
+      mediaRecorder.start();
+
+      setRecorder(mediaRecorder);
+      setRecording(true);
+
+
+  }else{
+
+    
+
+      if(recorder && recorder.state !== "inactive"){
+          recorder.stop();
+      }
+
+      setRecording(false);
+
+  }
+
+
+  }}
+>
+<Mic size={20}/>
+</button>
         
-      <button 
-            className="send-btn"
-            onClick={handleSend}
-      >
-      
-        <Send size={20} />
-      </button>
+     <button
+        className="send-btn"
+        onClick={()=>{
+        handleSend();
+        }}
+        >
+        <Send size={20}/>
+    </button>
       </div>
 
       {

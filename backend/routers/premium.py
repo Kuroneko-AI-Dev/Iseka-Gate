@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -21,17 +21,10 @@ def activate(
     current_user = Depends(get_current_user)
 ):
 
-    user = activate_premium(
-        db,
-        current_user,
-        days=7
+    raise HTTPException(
+        status_code=403,
+        detail="Premium hanya dapat diaktifkan setelah pembayaran terverifikasi."
     )
-
-    return {
-        "message": "Premium berhasil diaktifkan.",
-        "plan": user.plan,
-        "premium_until": user.premium_until
-    }
 
 
 @router.get("/status")
