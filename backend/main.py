@@ -39,6 +39,8 @@ from tool_router import choose_tool
 from tool_manager import run_tool
 from dotenv import load_dotenv
 from routers.stt import router as stt_router
+from routers import vision
+
 
 load_dotenv()
 
@@ -57,10 +59,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://192.168.1.3:5173",
-        "https://isekaiport.pages.dev",
-        "https://ministers-boards-row-releases.trycloudflare.com"
+        "https://wash-mines-psychological-demonstrated.trycloudflare.com",
+        "http://192.168.1.5:5173",
+        "https://isekaiport.pages.dev"
+        
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -86,7 +88,7 @@ app.include_router(payment_router)
 app.include_router(admin_router)
 app.include_router(live_router)
 app.include_router(stt_router)
-
+app.include_router(vision.router)
 
 #Base.metadata.create_all(bind=engine)
 
@@ -146,7 +148,9 @@ async def chat(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
-
+    print("=== CHAT REQUEST ===")
+    print("MESSAGE:", data.message)
+    print("VISION:", data.vision)
     # ============================
     # Conversation
     # ============================
@@ -227,6 +231,32 @@ Gunakan gaya tersebut saat menjawab.
             "content": m.content
         })
 
+# ============================
+# Vision Context
+# ============================
+    if data.vision:
+
+        vision_data = data.vision
+
+        vision_prompt = f"""
+    Informasi kamera saat ini:
+
+    Objek:
+    {", ".join([obj.name for obj in vision_data.objects])}
+
+    Caption:
+    {vision_data.caption}
+
+    Jawab pertanyaan user berdasarkan informasi kamera ini.
+    """
+
+        chat_history.insert(
+            -1,
+            {
+                "role":"user",
+                "content":vision_prompt
+            }
+        )
     print("LLM done")
 
     tts_mode = "auto"
@@ -294,10 +324,20 @@ Sebutkan sumber bila memungkinkan.
 """
                 })
 
+
+
+
     # ============================
     # LLM
     # ============================
+    print("=== FINAL CHAT HISTORY ===")
 
+    for item in chat_history:
+        print("----------------")
+        print("ROLE:", item["role"])
+        print(item["content"][:500])
+
+    print("==========================")
     answer = ask_gpt(
         chat_history,
         mode="normal"

@@ -35,7 +35,7 @@ app.mount(
 
 class TTSRequest(BaseModel):
     text: str
-    voice: str = "af_nicole"
+    voice: str = "af_heart"
 
 
 @app.get("/ping")

@@ -30,7 +30,7 @@ def generate_tts(
 
         audio = generate_kokoro_tts(
             text,
-            voice="af_nicole"
+            voice="af_heart"
         )
 
 

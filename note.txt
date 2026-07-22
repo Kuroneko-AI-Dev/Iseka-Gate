@@ -58,3 +58,11 @@ main harus ada https atau alamat web
         "https://dense-tactics-outlined-sig.trycloudflare.com",
         "https://isekaiport.pages.dev"
     ],
+
+
+    update repo per tama cek branch jika sudah terhubung dg github
+
+    git branch
+    git add .
+    git commit -m "Update project"
+    git push origin main

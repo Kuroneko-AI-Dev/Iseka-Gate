@@ -11,7 +11,8 @@ import {
   deleteConversation,
   activatePremium,
   createPayment,
-  researchWeb
+  researchWeb,
+  analyzeVision
 } from "./api";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -31,7 +32,8 @@ import { API_URL } from "./config";
 import "./App.css";
 import PremiumModal from "./components/PremiumModal";
 import Live from "./components/live/Live";
-
+import CameraPreview from "./components/vision/CameraPreview";
+import { useRef } from "react";
 
 
 export default function App() {
@@ -54,7 +56,8 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     !!localStorage.getItem("token")
   );
-
+  const [visionEnabled, setVisionEnabled] = useState(false);
+  const cameraRef = useRef(null);
   const [showPremium,setShowPremium]=useState(false);
   const [page, setPage] = useState("login");
   const [loading,setLoading]=useState(false);
@@ -192,6 +195,22 @@ useEffect(()=>{
 
     const voice =
       localStorage.getItem("voice") || "Leda";
+      let vision = null;
+
+      if (visionEnabled && cameraRef.current) {
+
+          const imageBlob = await cameraRef.current.captureFrame();
+
+          if (imageBlob) {
+
+              vision = await analyzeVision(
+                  imageBlob,
+                  "environment"
+              );
+
+              console.log("Vision:", vision);
+          }
+      }
 
     if (researchMode) {
       result = await researchWeb(userText);
@@ -216,7 +235,9 @@ useEffect(()=>{
 
       conversationId,
 
-      voice
+      voice,
+      
+      vision
 
     );
 
@@ -773,6 +794,10 @@ useEffect(()=>{
             )}
 
             <AvatarStage />
+            <CameraPreview
+                ref={cameraRef}
+                enabled={visionEnabled}
+            />
 
           </div>
 
@@ -797,6 +822,8 @@ useEffect(()=>{
     isTyping={isTyping}
     researchMode={researchMode}
     setResearchMode={setResearchMode}
+    visionEnabled={visionEnabled}
+    setVisionEnabled={setVisionEnabled}
   />
 
   {currentPage === "settings" && (

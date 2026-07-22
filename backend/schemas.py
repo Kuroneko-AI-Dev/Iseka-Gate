@@ -3,6 +3,28 @@ from pydantic import BaseModel, Field
 from pydantic import BaseModel
 
 
+
+class VisionObject(BaseModel):
+    name: str
+    confidence: float
+    box: list[int]
+
+
+class VisionData(BaseModel):
+
+    camera: str
+
+    faces: int = 0
+
+    objects: list[VisionObject] = []
+
+    caption: str = ""
+
+    text: str = ""
+
+    should_comment: bool = False
+
+
 class ChatRequest(BaseModel):
 
     message: str
@@ -12,6 +34,8 @@ class ChatRequest(BaseModel):
     voice: str = "Leda"
 
     style: str | None = ""
+
+    vision: VisionData | None = None
     
 class RegisterRequest(BaseModel):
 

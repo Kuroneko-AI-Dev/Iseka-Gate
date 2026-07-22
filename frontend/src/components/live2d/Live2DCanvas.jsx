@@ -19,6 +19,7 @@ export default function Live2DCanvas(){
     
         delegate.initialize();
 
+        
     
         delegate.run();
 

@@ -20,7 +20,9 @@ export default function ChatPanel({
   handleSend,
   isTyping,
   researchMode,
-  setResearchMode
+  setResearchMode,
+  visionEnabled,
+  setVisionEnabled
 }) {
 
 
@@ -292,6 +294,9 @@ export default function ChatPanel({
         researchMode={researchMode}
 
         setResearchMode={setResearchMode}
+
+        visionEnabled={visionEnabled}
+        setVisionEnabled={setVisionEnabled}
 
       />
 

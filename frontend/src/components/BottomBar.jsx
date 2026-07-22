@@ -14,23 +14,26 @@ export default function BottomBar({
   setInput,
   handleSend,
   researchMode,
-  setResearchMode
+  setResearchMode,
+  visionEnabled,
+  setVisionEnabled
 }) {
  
   const [recording,setRecording] = useState(false);
   const [recorder,setRecorder] = useState(null);
-  const [popup, setPopup] = useState("");
+ 
   return (
     <div className="bottom-bar">
       <div className="chat-input-box">
        
-      <button
+     <button
+          className={visionEnabled ? "camera-active" : ""}
           onClick={()=>{
-            setPopup("Vision Camera Coming Soon");
+              setVisionEnabled(!visionEnabled);
           }}
-        >
-          <Camera size={20} />
-        </button>
+      >
+          <Camera size={20}/>
+      </button>
 
         <input
         value={input}
@@ -77,7 +80,7 @@ export default function BottomBar({
 
       mediaRecorder.onstop=async()=>{
 
-        setPopup("");
+       
 
         stream.getTracks().forEach((track)=>track.stop());
 
@@ -131,54 +134,7 @@ export default function BottomBar({
     </button>
       </div>
 
-      {
-      popup && (
-
-      <div
-        className="coming-popup"
-        onClick={()=>{
-          setPopup("");
-        }}
-      >
-
-        <div
-          className="coming-box"
-          onClick={(e)=>e.stopPropagation()}
-        >
-
-          <h3>
-            🚀 Coming Soon
-          </h3>
-
-          <p>
-            {popup}
-          </p>
-
-          <button 
-            onClick={()=>{
-              setPopup("");
-            }}
-          >
-            OK
-          </button>
-
-          
-
-          
-
-        </div>
-        
-        
-
-      </div>
-      
-
-    
-
-      )
-      }
-      
-
+  
     </div>
   );
 }

@@ -24,7 +24,7 @@ print("KOKORO MODEL LOADED")
 
 def generate_tts(
     text: str,
-    voice: str = "af_nicole"
+    voice: str = "af_heart"
 ):
 
     print("=== KOKORO TTS ===")

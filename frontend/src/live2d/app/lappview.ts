@@ -55,7 +55,7 @@ export class LAppView {
     this._viewMatrix.scale(LAppDefine.ViewScale, LAppDefine.ViewScale);
 
     // Geser kamera ke bawah
-    this._viewMatrix.translateRelative(0.0, -0.30);
+    this._viewMatrix.translateRelative(0.0, -0.20);
 
     this._deviceToScreen.loadIdentity();
     if (width > height) {

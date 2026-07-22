@@ -4,7 +4,8 @@ import { API_URL } from "./config";
 export async function sendMessage(
   message,
   conversationId,
-  voice
+  voice,
+  vision = null
 ){
 
   const response = await api.post(
@@ -13,7 +14,8 @@ export async function sendMessage(
       message,
       conversation_id: conversationId,
       voice,
-      style: localStorage.getItem("style")
+      style: localStorage.getItem("style"),
+      vision
     }
   );
 
@@ -197,6 +199,65 @@ export async function speechToText(audioBlob){
         }
     );
 
+
+    return response.data;
+
+}
+
+
+export async function analyzeVision(
+
+    imageBlob,
+
+    camera
+
+){
+
+    const formData = new FormData();
+
+    formData.append(
+
+        "image",
+
+        imageBlob,
+
+        "frame.jpg"
+
+    );
+
+    formData.append(
+
+        "camera",
+
+        camera
+
+    );
+        
+        formData.append(
+
+        "mode",
+
+        "vision"
+
+    );
+
+    const response = await api.post(
+
+        "/vision/analyze",
+
+        formData,
+
+        {
+
+            headers:{
+
+                "Content-Type":"multipart/form-data"
+
+            }
+
+        }
+
+    );
 
     return response.data;
 

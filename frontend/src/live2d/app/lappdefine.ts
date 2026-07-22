@@ -18,7 +18,7 @@ export const CanvasSize: { width: number; height: number } | 'auto' = 'auto';
 export const CanvasNum = 1;
 
 // 画面
-export const ViewScale = 2.0;
+export const ViewScale = 1.9;
 export const ViewMaxScale = 3.0;
 export const ViewMinScale = 1.0;
 
@@ -51,7 +51,7 @@ export const PowerImageName = 'CloseNormal.png';
 // モデルを配置したディレクトリ名の配列
 // ディレクトリ名とmodel3.jsonの名前を一致させておくこと
 export const ModelDir: string[] = [
-  'aogiri',
+  'aoi',
 ];
 export const ModelDirSize: number = ModelDir.length;
 
