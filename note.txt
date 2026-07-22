@@ -1,0 +1,68 @@
+npm run dev -- --host #menjalankan frontend network
+
+5. Jalankan Backend FastAPI
+
+Di terminal backend:
+
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+Kalau berhasil akan muncul:
+
+INFO: Uvicorn running on http://0.0.0.0:8000
+6. Jalankan Cloudflare Tunnel
+
+Buka terminal baru:
+
+cloudflared tunnel --url http://localhost:8000
+
+Nanti akan muncul URL seperti:
+
+https://xxxxxxxx.trycloudflare.com
+
+Salin URL tersebut.
+
+Jika URL Cloudflare berubah
+
+Ubah:
+
+VITE_API_URL=https://xxxxxxxx.trycloudflare.com
+
+Kemudian:
+
+cd frontend
+npm run build
+
+Lalu upload ulang folder:
+
+frontend/dist
+
+ke Netlify.
+
+ganti juga domain yang berada di firebase
+
+
+uvicorn app:app --host 0.0.0.0 --port 9000
+ server whisper.cpp
+ build\bin\Release\whisper-server.exe ^
+-m models\ggml-small.bin ^
+--host 127.0.0.1 ^
+--port 8178 ^
+-l id ^
+--threads 6
+
+
+main harus ada https atau alamat web
+  allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://dense-tactics-outlined-sig.trycloudflare.com",
+        "https://isekaiport.pages.dev"
+    ],
+
+
+    update repo per tama cek branch jika sudah terhubung dg github
+
+    git branch
+    git add .
+    git commit -m "Update project"
+    git push origin main

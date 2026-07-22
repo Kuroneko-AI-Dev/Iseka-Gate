@@ -1,0 +1,268 @@
+# Project Structure
+
+```
+backend/
+├── chat
+├── live
+│   ├── __init__.py
+│   ├── ai_worker.py
+│   ├── events.py
+│   ├── manager.py
+│   ├── queue.py
+│   ├── state.py
+│   └── websocket.py
+├── plans
+├── routers
+│   ├── admin.py
+│   ├── auth.py
+│   ├── live.py
+│   ├── memory.py
+│   ├── premium.py
+│   └── stt.py
+├── tools
+│   └── research.py
+├── users
+├── audio_converter.py
+├── auth.py
+├── database.py
+├── Dockerfile
+├── firebase_admin_config.py
+├── firebase_auth.py
+├── gemini_tts.py
+├── google_auth.py
+├── google_login.py
+├── gpt_service.py
+├── kokoro_tts.py
+├── main.py
+├── models.py
+├── payment.py
+├── premium.py
+├── requirements.txt
+├── schemas.py
+├── security.py
+├── stt_service.py
+├── test_live.py
+├── tool_manager.py
+├── tool_router.py
+├── translator.py
+└── tts_manager.py
+```
+
+
+# Project Structure
+
+```
+frontend/
+├── docs
+│   └── Live2d.md
+├── public
+│   ├── assets
+│   │   ├── aoi-desktop.png
+│   │   └── aoi-mobile.png
+│   ├── bg
+│   │   └── room.jpg
+│   ├── Framework
+│   │   └── Shaders
+│   │       └── WebGL
+│   │           ├── fragshadersrcalphablend.frag
+│   │           ├── fragshadersrccolorblend.frag
+│   │           ├── fragshadersrccopy.frag
+│   │           ├── fragshadersrcmaskinvertedpremultipliedalpha.frag
+│   │           ├── fragshadersrcmaskpremultipliedalpha.frag
+│   │           ├── fragshadersrcpremultipliedalpha.frag
+│   │           ├── fragshadersrcpremultipliedalphablend.frag
+│   │           ├── fragshadersrcsetupmask.frag
+│   │           ├── vertshadersrc.vert
+│   │           ├── vertshadersrcblend.vert
+│   │           ├── vertshadersrccopy.vert
+│   │           ├── vertshadersrcmasked.vert
+│   │           └── vertshadersrcsetupmask.vert
+│   ├── live2d
+│   │   ├── aogiri
+│   │   │   ├── aogiri.8192
+│   │   │   │   └── texture_00.png
+│   │   │   ├── aogiri.cdi3.json
+│   │   │   ├── aogiri.moc3
+│   │   │   ├── aogiri.model3.json
+│   │   │   ├── aogiri.physics3.json
+│   │   │   ├── aozameru.exp3.json
+│   │   │   ├── puku.exp3.json
+│   │   │   └── tereru.exp3.json
+│   │   └── core
+│   │       └── live2dcubismcore.min.js
+│   ├── apple-touch-icon.png
+│   ├── avatar.png
+│   ├── favicon.png
+│   ├── icons.svg
+│   ├── idle.mp4
+│   ├── login.png
+│   ├── logo.png
+│   ├── portal.mp4
+│   ├── pwa-192.png
+│   └── pwa-512.png
+├── src
+│   ├── api
+│   │   ├── admin.js
+│   │   ├── auth.js
+│   │   ├── axios.js
+│   │   ├── memory.js
+│   │   └── user.js
+│   ├── assets
+│   │   ├── hero.png
+│   │   ├── react.svg
+│   │   └── vite.svg
+│   ├── components
+│   │   ├── live
+│   │   │   ├── Live.css
+│   │   │   ├── Live.jsx
+│   │   │   ├── LiveComments.jsx
+│   │   │   ├── LiveHeader.jsx
+│   │   │   ├── LiveQueue.jsx
+│   │   │   └── LiveStatus.jsx
+│   │   ├── live2d
+│   │   │   ├── Live2DCanvas.jsx
+│   │   │   └── Live2dCanvasLive2.jsx
+│   │   ├── AvatarStage.jsx
+│   │   ├── AvatarStageLive.jsx
+│   │   ├── BottomBar.jsx
+│   │   ├── ChatPanel.jsx
+│   │   ├── PremiumModal.css
+│   │   ├── PremiumModal.jsx
+│   │   ├── SplashScreen.css
+│   │   └── SplashScreen.jsx
+│   ├── framework
+│   │   ├── effect
+│   │   │   ├── cubismbreath.ts
+│   │   │   ├── cubismeyeblink.ts
+│   │   │   ├── cubismlook.ts
+│   │   │   └── cubismpose.ts
+│   │   ├── id
+│   │   │   ├── cubismid.ts
+│   │   │   └── cubismidmanager.ts
+│   │   ├── math
+│   │   │   ├── cubismmath.ts
+│   │   │   ├── cubismmatrix44.ts
+│   │   │   ├── cubismmodelmatrix.ts
+│   │   │   ├── cubismtargetpoint.ts
+│   │   │   ├── cubismvector2.ts
+│   │   │   └── cubismviewmatrix.ts
+│   │   ├── model
+│   │   │   ├── cubismmoc.ts
+│   │   │   ├── cubismmodel.ts
+│   │   │   ├── cubismmodelmultiplyandscreencolor.ts
+│   │   │   ├── cubismmodeluserdata.ts
+│   │   │   ├── cubismmodeluserdatajson.ts
+│   │   │   └── cubismusermodel.ts
+│   │   ├── motion
+│   │   │   ├── acubismmotion.ts
+│   │   │   ├── cubismbreathupdater.ts
+│   │   │   ├── cubismexpressionmotion.ts
+│   │   │   ├── cubismexpressionmotionmanager.ts
+│   │   │   ├── cubismexpressionupdater.ts
+│   │   │   ├── cubismeyeblinkupdater.ts
+│   │   │   ├── cubismlipsyncupdater.ts
+│   │   │   ├── cubismlookupdater.ts
+│   │   │   ├── cubismmotion.ts
+│   │   │   ├── cubismmotioninternal.ts
+│   │   │   ├── cubismmotionjson.ts
+│   │   │   ├── cubismmotionmanager.ts
+│   │   │   ├── cubismmotionqueueentry.ts
+│   │   │   ├── cubismmotionqueuemanager.ts
+│   │   │   ├── cubismphysicsupdater.ts
+│   │   │   ├── cubismposeupdater.ts
+│   │   │   ├── cubismupdatescheduler.ts
+│   │   │   ├── icubismupdater.ts
+│   │   │   └── iparameterprovider.ts
+│   │   ├── physics
+│   │   │   ├── cubismphysics.ts
+│   │   │   ├── cubismphysicsinternal.ts
+│   │   │   └── cubismphysicsjson.ts
+│   │   ├── rendering
+│   │   │   ├── cubismclippingmanager.ts
+│   │   │   ├── cubismoffscreenmanager.ts
+│   │   │   ├── cubismoffscreenrendertarget_webgl.ts
+│   │   │   ├── cubismrenderer_webgl.ts
+│   │   │   ├── cubismrenderer.ts
+│   │   │   ├── cubismrendertarget_webgl.ts
+│   │   │   └── cubismshader_webgl.ts
+│   │   ├── type
+│   │   │   └── csmrectf.ts
+│   │   ├── utils
+│   │   │   ├── cubismarrayutils.ts
+│   │   │   ├── cubismdebug.ts
+│   │   │   ├── cubismjson.ts
+│   │   │   ├── cubismjsonextension.ts
+│   │   │   └── cubismstring.ts
+│   │   ├── cubismdefaultparameterid.ts
+│   │   ├── cubismframeworkconfig.ts
+│   │   ├── cubismmodelsettingjson.ts
+│   │   ├── icubismallcator.ts
+│   │   ├── icubismmodelsetting.ts
+│   │   └── live2dcubismframework.ts
+│   ├── live2d
+│   │   ├── app
+│   │   │   ├── CubismApp.ts
+│   │   │   ├── lappdefine.ts
+│   │   │   ├── lappdelegate.ts
+│   │   │   ├── lappglmanager.ts
+│   │   │   ├── lapplive2dmanager.ts
+│   │   │   ├── lappmodel.ts
+│   │   │   ├── lapppal.ts
+│   │   │   ├── lappsprite.ts
+│   │   │   ├── lappsubdelegate.ts
+│   │   │   ├── lapptexturemanager.ts
+│   │   │   ├── lappview.ts
+│   │   │   ├── lappwavfilehandler.ts
+│   │   │   └── touchmanager.ts
+│   │   ├── hooks
+│   │   ├── manager
+│   │   └── shaders
+│   │       ├── fragshadersrcalphablend.frag
+│   │       ├── fragshadersrccolorblend.frag
+│   │       ├── fragshadersrccopy.frag
+│   │       ├── fragshadersrcmaskinvertedpremultipliedalpha.frag
+│   │       ├── fragshadersrcmaskpremultipliedalpha.frag
+│   │       ├── fragshadersrcpremultipliedalpha.frag
+│   │       ├── fragshadersrcpremultipliedalphablend.frag
+│   │       ├── fragshadersrcsetupmask.frag
+│   │       ├── vertshadersrc.vert
+│   │       ├── vertshadersrcblend.vert
+│   │       ├── vertshadersrccopy.vert
+│   │       ├── vertshadersrcmasked.vert
+│   │       └── vertshadersrcsetupmask.vert
+│   ├── pages
+│   │   ├── settings
+│   │   │   ├── ManageMemory.css
+│   │   │   └── ManageMemory.jsx
+│   │   ├── AdminDashboard.css
+│   │   ├── AdminDashboard.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── RegisterPage.jsx
+│   │   ├── SettingsPage.css
+│   │   ├── SettingsPage.jsx
+│   │   └── SignUpPage.jsx
+│   ├── api.js
+│   ├── App.css
+│   ├── App.jsx
+│   ├── config.js
+│   ├── firebase.js
+│   ├── index.css
+│   └── main.jsx
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── README.md
+├── tsconfig.json
+└── vite.config.js
+```
+
+# Project Structure
+
+```
+kokoro_service/
+├── app.py
+├── kokoro_tts.py
+└── tes.wav
+```

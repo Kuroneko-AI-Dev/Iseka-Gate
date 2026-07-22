@@ -6,11 +6,18 @@ from sqlalchemy import Text
 from sqlalchemy.sql import func
 from sqlalchemy import ForeignKey
 from database import Base
+from sqlalchemy import Boolean
 
 
 class User(Base):
 
     __tablename__ = "users"
+
+    is_admin = Column(Boolean, default=False)
+
+    is_premium = Column(Boolean, default=False)
+
+    is_banned = Column(Boolean, default=False)
 
     id = Column(
         Integer,
@@ -43,6 +50,11 @@ class User(Base):
     plan = Column(
         String,
         default="FREE"
+    )
+
+    premium_until = Column(
+        DateTime(timezone=True),
+        nullable=True
     )
 
     created_at = Column(

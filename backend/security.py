@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from jose import jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-
+from premium import check_premium_status
 from database import get_db
 from models import User
 
@@ -31,24 +31,21 @@ def get_current_user(
     token: str = Depends(oauth2_scheme),
     db = Depends(get_db)
 ):
-    print("TOKEN MASUK:")
-    print(token)
-
     try:
+        if not SECRET_KEY:
+            raise RuntimeError("SECRET_KEY belum dikonfigurasi")
 
         payload = jwt.decode(
             token,
             SECRET_KEY,
             algorithms=[ALGORITHM]
         )
-        print("PAYLOAD:")
-        print(payload)
         user_id = payload.get("sub")
+        if not user_id:
+            raise ValueError("Token tidak memiliki subject")
 
 
-    except Exception as e:
-        print("JWT ERROR:")
-        print(e)
+    except Exception:
 
         raise HTTPException(
             status_code=401,
@@ -68,6 +65,13 @@ def get_current_user(
             detail="User tidak ditemukan"
         )
 
+    if user.is_banned:
+        raise HTTPException(status_code=403, detail="Akun ini telah diblokir")
+
+    user = check_premium_status(
+        db,
+        user
+    )
 
     return user
 
@@ -86,6 +90,9 @@ def verify_password(password: str, hashed: str):
 
 
 def create_access_token(data: dict):
+
+    if not SECRET_KEY:
+        raise RuntimeError("SECRET_KEY belum dikonfigurasi")
 
     payload = data.copy()
 

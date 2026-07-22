@@ -1,27 +1,39 @@
 import { useState, useEffect } from "react";
+import SplashScreen from "./components/SplashScreen";
 import { getProfile } from "./api/user";
+
+import AdminDashboard from "./pages/AdminDashboard";
 import {
   sendMessage,
   getConversations,
   getMessages,
   renameConversation,
-  deleteConversation
+  deleteConversation,
+  activatePremium,
+  createPayment,
+  researchWeb,
+  analyzeVision
 } from "./api";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import SettingsPage from "./pages/SettingsPage";
 import AvatarStage from "./components/AvatarStage";
 import ChatPanel from "./components/ChatPanel";
-import { Menu } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import {
   MessageCircle,
   Eye,
   Brain,
   Mic,
-  Settings
+  Settings,
+  Crown,House,Radio
 } from "lucide-react";
 import { API_URL } from "./config";
 import "./App.css";
+import PremiumModal from "./components/PremiumModal";
+import Live from "./components/live/Live";
+import CameraPreview from "./components/vision/CameraPreview";
+import { useRef } from "react";
 
 
 export default function App() {
@@ -31,6 +43,7 @@ export default function App() {
   const [messages, setMessages] = useState([]);
   const [activeChat,setActiveChat] = useState(null);
   const [input, setInput] = useState("");
+  const [researchMode, setResearchMode] = useState(false);
   const [conversationId,setConversationId] = useState(null);
   const [conversations,setConversations] = useState([]);
   const [showHistory,setShowHistory] = useState(false);
@@ -43,9 +56,49 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     !!localStorage.getItem("token")
   );
-
-
+  const [visionEnabled, setVisionEnabled] = useState(false);
+  const cameraRef = useRef(null);
+  const [showPremium,setShowPremium]=useState(false);
   const [page, setPage] = useState("login");
+  const [loading,setLoading]=useState(false);
+  const [enter,setEnter]=useState(false);
+
+
+const isAndroid =
+    /Android/i.test(navigator.userAgent);
+
+const isStandalone =
+(window.matchMedia("(display-mode: standalone)").matches ||
+window.navigator.standalone === true) &&
+isAndroid;
+/*useeffect time*/
+useEffect(()=>{
+
+    if(isStandalone){
+
+        setLoading(true);
+
+
+        const timer=setTimeout(()=>{
+
+            setEnter(true);
+
+
+            setTimeout(()=>{
+
+                setLoading(false);
+
+            },800);
+
+
+        },17000);
+
+
+        return ()=>clearTimeout(timer);
+
+    }
+
+},[]);
 
 
   const [user, setUser] = useState(()=>{
@@ -56,6 +109,21 @@ export default function App() {
       : null;
   });
 
+   function resetChatState() {
+
+    setMessages([]);
+    setConversationId(null);
+    setConversations([]);
+    setActiveChat(null);
+    setShowHistory(false);
+    setMenuChatId(null);
+    setRenameChat(null);
+    setRenameText("");
+    setDeleteChat(null);
+    setInput("");
+    setCurrentPage("chat");
+
+  }
 
 
   // ambil data user dari backend
@@ -91,112 +159,189 @@ export default function App() {
 },[isLoggedIn]);
 
 
-  async function handleSend(){
+ async function handleSend(textToSend = input){
 
 
-    if(!input.trim()) return;
+  if(typeof textToSend !== "string"){
+    console.log("INVALID SEND DATA:", textToSend);
+    return;
+  }
 
 
-    const userText = input;
+  if(!textToSend.trim()) return;
+
+
+  const userText = textToSend.trim();
+  setMessages(prev=>[
+    ...prev,
+    {
+      role:"user",
+      content:userText
+    }
+  ]);
+
+
+  setInput("");
+
+
+  let result;
+
+
+  try{
+
+
+    setIsTyping(true);
+
+
+    const voice =
+      localStorage.getItem("voice") || "Leda";
+      let vision = null;
+
+      if (visionEnabled && cameraRef.current) {
+
+          const imageBlob = await cameraRef.current.captureFrame();
+
+          if (imageBlob) {
+
+              vision = await analyzeVision(
+                  imageBlob,
+                  "environment"
+              );
+
+              console.log("Vision:", vision);
+          }
+      }
+
+    if (researchMode) {
+      result = await researchWeb(userText);
+      const sourceList = result.sources
+        .map((source, index) => `[${index + 1}] ${source.title}\n${source.url}`)
+        .join("\n\n");
+
+      setMessages(prev=>[
+        ...prev,
+        {
+          role:"assistant",
+          content:`${result.answer}\n\nSources:\n${sourceList}`
+        }
+      ]);
+      return;
+    }
+
+
+    result = await sendMessage(
+
+      userText,
+
+      conversationId,
+
+      voice,
+      
+      vision
+
+    );
+
+    console.log("result dari backend:", result);
+
+
+    setConversationId(
+      result.conversation_id
+    );
+
+
+    const chats = await getConversations();
+
+    setConversations(chats);
+
 
 
     setMessages(prev=>[
       ...prev,
       {
-        role:"user",
-        content:userText
+        role:"assistant",
+        content:result.text
       }
     ]);
 
 
-    setInput("");
 
-
-
-    try{
-
-
-      setIsTyping(true);
-
-
-      const voice =
-
-        localStorage.getItem("voice") ||
-
-        "Leda";
-
-        const result = await sendMessage(
-
-            userText,
-
-            conversationId,
-
-            voice
-
-        );
-
-
-      setConversationId(
-        result.conversation_id
-      );
-      const chats = await getConversations();
-
-      setConversations(chats);
-
-      setIsTyping(false);
-
-
+    // tampilkan notif kokoro
+    if(result.tts_notice){
 
       setMessages(prev=>[
         ...prev,
         {
-          role:"assistant",
-          content:result.text
-        }
-      ]);
-
-
-
-      const audioUrl = `${API_URL}/${result.audio}`;
-
-      const audio = new Audio(audioUrl);
-
-
-      audio.play();
-
-
-      // SEND AUDIO TO LIVE2D LIPSYNC
-      if(window.live2dModel){
-
-          window.live2dModel.startLipSync(
-              audioUrl
-          );
-
-      }
-
-    
-
-
-
-    }catch{
-
-
-      setMessages(prev=>[
-        ...prev,
-        {
-          role:"assistant",
-          content:"Backend tidak terhubung."
+          role:"system",
+          content:result.tts_notice
         }
       ]);
 
     }
 
+
+
+    const audioUrl = result.audio.startsWith("http")
+      ? result.audio
+      : `${API_URL}/${result.audio}`;
+
+
+
+    const audio = new Audio(audioUrl);
+
+
+    audio.onerror = (e)=>{
+      console.log("Audio error:",e);
+    };
+
+
+    audio.play()
+    .catch(err=>{
+      console.log("Audio play blocked:",err);
+    });
+
+
+
+    if(window.live2dModel){
+
+      window.live2dModel.startLipSync(
+        audioUrl
+      );
+
+    }
+
+
+
+  }catch(error){
+
+
+    console.log("FRONTEND ERROR:",error);
+
+
+    setMessages(prev=>[
+      ...prev,
+      {
+        role:"assistant",
+        content:"Backend tidak terhubung."
+      }
+    ]);
+
+  }
+  finally{
+
+    setIsTyping(false);
+
   }
 
 
+}
 
 
 
+  if(loading){
+
+      return <SplashScreen enter={enter}/>;
+
+  }
 
   // belum login
   if(!isLoggedIn){
@@ -253,12 +398,22 @@ export default function App() {
 
 
 
+  if (user?.is_admin && currentPage === "admin") {
+    return <AdminDashboard />;
+}
 
-
+  if (currentPage === "live") {
+    return (
+        <Live
+            user={user}
+            onExit={() => setCurrentPage("chat")}
+        />
+    );
+}
 
   return (
 
-    <div className="app">
+    <div className={`app ${isStandalone ? "standalone" : ""}`}>
 
 
 
@@ -275,69 +430,73 @@ export default function App() {
 
         </div>
 
+      <div className="menu">
 
-       <div className="menu">
 
-      <button
-        onClick={() => {
+        <button
+          onClick={() => {
 
             setConversationId(null);
-
             setMessages([]);
-
             setActiveChat(null);
-
             setShowHistory(false);
 
-        }}
-    >
-        <MessageCircle />
-    </button>
+          }}
+        >
+          <MessageCircle />
+        </button>
 
 
-  <button>
-    <Eye />
-  </button>
+        <button
+          className="brain-menu"
+          onClick={()=>{
+            setShowHistory(!showHistory)
+          }}
+        >
+          <Brain />
+        </button>
 
 
-  <button
-    className="brain-menu"
-    onClick={()=>{
-      setShowHistory(!showHistory)
-    }}
-  >
-    <Brain />
-  </button>
+        <button
+          onClick={()=>{
+            setShowPremium(true);
+          }}
+        >
+          <Crown />
+        </button>
 
 
+        <button
+          onClick={() => {
 
-  <button>
-    <Mic />
-  </button>
+            if(currentPage==="settings"){
 
-    <button
-        onClick={() => {
+                setCurrentPage("chat");
 
-    if(currentPage==="settings"){
+            }else{
 
-        setCurrentPage("chat");
+                setCurrentPage("settings");
 
-    }else{
+                setShowHistory(false);
 
-        setCurrentPage("settings");
+            }
 
-        setShowHistory(false);
+          }}
+        >
+          <Settings />
+        </button>
 
-    }
+        <button
+            onClick={()=>{
+                setCurrentPage("live");
+            }}
+        >
+            <Radio />
+        </button>
 
-}}
-    >
-        <Settings />
-    </button>
-  
 
-</div>
-        
+        </div>
+              
         <div className="account-section">
 
 
@@ -377,7 +536,26 @@ export default function App() {
                 }
                 {" "}PLAN
 
+                 
               </div>
+
+               <button
+                      className="premium-btn"
+                     onClick={async()=>{
+
+                        setShowPremium(true);
+                      
+                        const result = await createPayment("monthly");
+
+                        console.log(result);
+
+                        alert(result.message);
+
+                    }}
+                                      >
+                      Upgrade
+                  </button>
+
 
 
 
@@ -391,34 +569,37 @@ export default function App() {
 
               className="signin-btn"
 
+              onClick={() => {
 
-              onClick={()=>{
-
-
-                localStorage.removeItem(
-                  "token"
-                );
-
-
-                localStorage.removeItem(
-                  "user"
-                );
-
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
 
                 setUser(null);
-
-
                 setIsLoggedIn(false);
 
+                // Reset semua state chat
+                setMessages([]);
+                setConversationId(null);
+                setConversations([]);
+                setActiveChat(null);
+                setShowHistory(false);
+                setMenuChatId(null);
+                setRenameChat(null);
+                setDeleteChat(null);
+                setInput("");
+                setCurrentPage("chat");
 
-              }}
-
+            }}
             >
+              <LogOut size={16} />
 
-              Logout
+               <span>Logout</span>
+
+              
 
             </button>
 
+              
 
 
           </div>
@@ -475,6 +656,7 @@ export default function App() {
 
        <div className="content">
 
+        
           <div className="avatar-column">
 
             {showHistory && (
@@ -612,17 +794,25 @@ export default function App() {
             )}
 
             <AvatarStage />
+            <CameraPreview
+                ref={cameraRef}
+                enabled={visionEnabled}
+            />
 
           </div>
 
           <div className="chat-column">
+      
 
-  <button
-    className="mobile-menu-btn"
-    onClick={() => setShowMobileMenu(!showMobileMenu)}
-  >
-    <Menu size={24} />
-  </button>
+
+            {currentPage !== "settings" && (
+              <button
+                  className="mobile-menu-btn"
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+              >
+                  <Menu />
+              </button>
+          )}
 
   <ChatPanel
     messages={messages}
@@ -630,6 +820,10 @@ export default function App() {
     setInput={setInput}
     handleSend={handleSend}
     isTyping={isTyping}
+    researchMode={researchMode}
+    setResearchMode={setResearchMode}
+    visionEnabled={visionEnabled}
+    setVisionEnabled={setVisionEnabled}
   />
 
   {currentPage === "settings" && (
@@ -639,10 +833,14 @@ export default function App() {
         className="settings-back"
         onClick={() => setCurrentPage("chat")}
       >
-        ← Back
+        <House size={18} />
+        Home
       </button>
 
-      <SettingsPage />
+      <SettingsPage
+          user={user}
+          onOpenAdmin={() => setCurrentPage("admin")}
+      />
 
     </div>
   )}
@@ -671,9 +869,23 @@ export default function App() {
       <span>History</span>
     </button>
 
-    <button>
-      <Mic size={18}/>
-      <span>Voice</span>
+    <button
+    onClick={()=>{
+        setCurrentPage("live");
+        setShowHistory(false);
+    }}
+    >
+        <Radio />
+    </button>
+
+    <button
+      onClick={()=>{
+        setShowPremium(true);
+        setShowMobileMenu(false);
+      }}
+    >
+      <Crown size={18}/>
+      <span>Premium</span>
     </button>
 
     <button onClick={()=>{
@@ -828,8 +1040,27 @@ export default function App() {
 
 )}
 
+  <PremiumModal
+    open={showPremium}
+    onClose={() => setShowPremium(false)}
+    user={user}
+    onUpgrade={async () => {
 
+        await activatePremium();
 
+        const profile = await getProfile();
+
+        setUser(profile);
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(profile)
+        );
+
+        setShowPremium(false);
+
+    }}
+/>
 
 
 

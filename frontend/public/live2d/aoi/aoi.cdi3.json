@@ -1,0 +1,298 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "",
+			"Name": "BrowL Y"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "",
+			"Name": "Mouth Form"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "",
+			"Name": "Mouth Open"
+		},
+		{
+			"Id": "ParamCheek",
+			"GroupId": "",
+			"Name": "Cheek"
+		},
+		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "",
+			"Name": "Body X"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "",
+			"Name": "Body Y"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "",
+			"Name": "Body Z"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "Breath"
+		},
+		{
+			"Id": "ParamHairFront",
+			"GroupId": "ParamGroup3",
+			"Name": "Hair Move Front"
+		},
+		{
+			"Id": "ParamHairSide",
+			"GroupId": "ParamGroup3",
+			"Name": "Hair Move Side"
+		},
+		{
+			"Id": "ParamHairBack",
+			"GroupId": "ParamGroup3",
+			"Name": "Hair Move Back"
+		},
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "ParamGroup4",
+			"Name": "Angle X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "ParamGroup4",
+			"Name": "Angle Y"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "ParamGroup4",
+			"Name": "Angle Z"
+		},
+		{
+			"Id": "ParamEyeLSmile",
+			"GroupId": "ParamGroup",
+			"Name": "EyeL Smile"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "ParamGroup",
+			"Name": "EyeL Open"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "ParamGroup",
+			"Name": "EyeR Open"
+		},
+		{
+			"Id": "ParamEyeRSmile",
+			"GroupId": "ParamGroup",
+			"Name": "EyeR Smile"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "ParamGroup",
+			"Name": "Eyeball X"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "ParamGroup",
+			"Name": "Eyeball Y"
+		},
+		{
+			"Id": "ParamBrowRY",
+			"GroupId": "ParamGroup2",
+			"Name": "BrowR Y"
+		},
+		{
+			"Id": "ParamBrowLX",
+			"GroupId": "ParamGroup2",
+			"Name": "BrowL X"
+		},
+		{
+			"Id": "ParamBrowRX",
+			"GroupId": "ParamGroup2",
+			"Name": "BrowR X"
+		},
+		{
+			"Id": "ParamBrowLAngle",
+			"GroupId": "ParamGroup2",
+			"Name": "BrowL Angle"
+		},
+		{
+			"Id": "ParamBrowRAngle",
+			"GroupId": "ParamGroup2",
+			"Name": "BrowR Angle"
+		},
+		{
+			"Id": "ParamBrowLForm",
+			"GroupId": "ParamGroup2",
+			"Name": "BrowL Form"
+		},
+		{
+			"Id": "ParamBrowRForm",
+			"GroupId": "ParamGroup2",
+			"Name": "BrowR Form"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "hair R"
+		},
+		{
+			"Id": "ParamGroup4",
+			"GroupId": "",
+			"Name": "face"
+		},
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "eye"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "alis"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Part",
+			"Name": "mulut atas"
+		},
+		{
+			"Id": "Part2",
+			"Name": "mulut bawah"
+		},
+		{
+			"Id": "Part3",
+			"Name": "mulut dalam"
+		},
+		{
+			"Id": "Part4",
+			"Name": "alis kanan"
+		},
+		{
+			"Id": "Part5",
+			"Name": "rambut depan kiri"
+		},
+		{
+			"Id": "Part13",
+			"Name": "full set mata kanan"
+		},
+		{
+			"Id": "Part21",
+			"Name": "rambut depan kanan"
+		},
+		{
+			"Id": "Part22",
+			"Name": "hidung"
+		},
+		{
+			"Id": "Part23",
+			"Name": "alis kiri"
+		},
+		{
+			"Id": "Part24",
+			"Name": "shadow rambut"
+		},
+		{
+			"Id": "Part25",
+			"Name": "wajah"
+		},
+		{
+			"Id": "Part26",
+			"Name": "baju atas"
+		},
+		{
+			"Id": "Part27",
+			"Name": "asesoris baju tengah"
+		},
+		{
+			"Id": "Part28",
+			"Name": "asesoris dress samping"
+		},
+		{
+			"Id": "Part29",
+			"Name": "baju dalam ats"
+		},
+		{
+			"Id": "Part30",
+			"Name": "baju dalam belakang"
+		},
+		{
+			"Id": "Part31",
+			"Name": "baju tengah"
+		},
+		{
+			"Id": "dress",
+			"Name": "dress"
+		},
+		{
+			"Id": "Part32",
+			"Name": "asesoris dress back"
+		},
+		{
+			"Id": "Part33",
+			"Name": "lengan"
+		},
+		{
+			"Id": "leher",
+			"Name": "leher"
+		},
+		{
+			"Id": "Part34",
+			"Name": "rambut back"
+		},
+		{
+			"Id": "Part35",
+			"Name": "kaki"
+		},
+		{
+			"Id": "Part36",
+			"Name": "dress bawah"
+		},
+		{
+			"Id": "Part14",
+			"Name": "alis kanan"
+		},
+		{
+			"Id": "Part15",
+			"Name": "bulu mata bawah kanan"
+		},
+		{
+			"Id": "Part16",
+			"Name": "bulu mata kanan"
+		},
+		{
+			"Id": "Part18",
+			"Name": "bulu mata s kanan"
+		},
+		{
+			"Id": "Part17",
+			"Name": "bawah alis"
+		},
+		{
+			"Id": "Part19",
+			"Name": "bola mata kanan"
+		},
+		{
+			"Id": "Part20",
+			"Name": "eyesR"
+		}
+	],
+	"CombinedParameters": [
+		[
+			"ParamMouthForm",
+			"ParamMouthOpenY"
+		],
+		[
+			"ParamEyeBallX",
+			"ParamEyeBallY"
+		]
+	]
+}

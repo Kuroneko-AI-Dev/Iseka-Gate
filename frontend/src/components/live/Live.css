@@ -1,0 +1,99 @@
+.live-page{
+
+    width:100vw;
+    height:100vh;
+
+    background:#111;
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+.live-header{
+
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 25px;
+
+    background:#1b1b1b;
+
+    border-bottom:1px solid #333;
+
+}
+
+.live-user{
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+}
+
+.exit-live-btn{
+
+    border:none;
+
+    background:#c31f1f;
+
+    color:white;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+.live-content{
+
+    flex:1;
+
+    display:flex;
+
+}
+
+.live-avatar{
+    position: relative;
+
+    min-width: 0;
+    height: 100%;
+
+    overflow: hidden;
+
+    flex: 1;
+}
+
+.live-side{
+
+    width:350px;
+
+    padding:20px;
+
+    background:#181818;
+
+    border-left:1px solid #333;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.live-card{
+
+    background:#232323;
+
+    border-radius:14px;
+
+    padding:18px;
+
+}

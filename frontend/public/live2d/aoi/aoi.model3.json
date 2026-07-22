@@ -1,0 +1,28 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "aoi.moc3",
+		"Textures": [
+			"aoi.4096/texture_00.png"
+		],
+		"Physics": "aoi.physics3.json",
+		"DisplayInfo": "aoi.cdi3.json"
+	},
+	"Groups": [
+	{
+		"Target": "Parameter",
+		"Name": "EyeBlink",
+		"Ids": [
+			"ParamEyeLOpen",
+			"ParamEyeROpen"
+		]
+	},
+	{
+		"Target": "Parameter",
+		"Name": "LipSync",
+		"Ids": [
+			"ParamMouthOpenY"
+		]
+	}
+]
+}

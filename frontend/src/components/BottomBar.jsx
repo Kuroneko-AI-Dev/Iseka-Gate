@@ -1,25 +1,40 @@
 import {
   Camera,
   Mic,
-  Send
+  Send,
+  Search
 } from "lucide-react";
-
+import {useState} from "react";
+import {
+  speechToText
+} from "../api";
 
 export default function BottomBar({
   input,
   setInput,
-  handleSend
+  handleSend,
+  researchMode,
+  setResearchMode,
+  visionEnabled,
+  setVisionEnabled
 }) {
+ 
+  const [recording,setRecording] = useState(false);
+  const [recorder,setRecorder] = useState(null);
+ 
   return (
     <div className="bottom-bar">
-
-      <button>
-        <Camera size={20} />
+      <div className="chat-input-box">
+       
+     <button
+          className={visionEnabled ? "camera-active" : ""}
+          onClick={()=>{
+              setVisionEnabled(!visionEnabled);
+          }}
+      >
+          <Camera size={20}/>
       </button>
 
-      <button>
-        <Mic size={20} />
-      </button>
         <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -29,12 +44,97 @@ export default function BottomBar({
             handleSend();
             }
         }}
-        placeholder="Ketik pesan..."
+        placeholder={researchMode ? "Ask Aoi to research the web..." : "Message Aoi..."}
         />
-      <button onClick={handleSend}>
-        <Send size={20} />
-      </button>
 
+         {
+          recording && (
+            <div className="recording-info">
+               Listening... Tekan Mic lagi untuk berhenti
+            </div>
+          )
+          }
+      <button
+  className={recording ? "mic-recording" : ""}
+  onClick={async()=>{
+
+
+  if(!recording){
+
+     
+
+      const stream =
+      await navigator.mediaDevices.getUserMedia({
+          audio:true
+      });
+
+      const mediaRecorder = new MediaRecorder(stream);
+
+      let chunks=[];
+
+
+      mediaRecorder.ondataavailable=e=>{
+          chunks.push(e.data);
+      };
+
+
+      mediaRecorder.onstop=async()=>{
+
+       
+
+        stream.getTracks().forEach((track)=>track.stop());
+
+
+        const blob = new Blob(chunks,{
+          type:"audio/webm"
+        });
+
+
+        const result = await speechToText(blob);
+
+
+        if(result?.text){
+          handleSend(String(result.text));
+        }
+
+      };
+
+
+      mediaRecorder.start();
+
+      setRecorder(mediaRecorder);
+      setRecording(true);
+
+
+  }else{
+
+    
+
+      if(recorder && recorder.state !== "inactive"){
+          recorder.stop();
+      }
+
+      setRecording(false);
+
+  }
+
+
+  }}
+>
+<Mic size={20}/>
+</button>
+        
+     <button
+        className="send-btn"
+        onClick={()=>{
+        handleSend();
+        }}
+        >
+        <Send size={20}/>
+    </button>
+      </div>
+
+  
     </div>
   );
 }

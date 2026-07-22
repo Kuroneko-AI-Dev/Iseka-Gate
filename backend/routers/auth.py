@@ -146,7 +146,7 @@ def google_login(
 
 @router.get("/me")
 def me(
-    current_user = Depends(get_current_user)
+    current_user=Depends(get_current_user)
 ):
 
     return {
@@ -154,7 +154,9 @@ def me(
         "username": current_user.username,
         "email": current_user.email,
         "plan": current_user.plan,
-        "avatar": current_user.avatar
+        "avatar": current_user.avatar,
+        "is_admin": current_user.is_admin,
+        "is_premium": current_user.is_premium,
+        "is_banned": current_user.is_banned
     }
-
 

@@ -635,7 +635,7 @@ export class LAppModel extends CubismUserModel {
     this._updateScheduler.onLateUpdate(this._model, deltaTimeSeconds);
 
 
-  
+   
 
     this._model.update();
   }
