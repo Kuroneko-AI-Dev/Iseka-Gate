@@ -41,7 +41,7 @@ ke Netlify.
 ganti juga domain yang berada di firebase
 
 
-uvicorn app:app --host 0.0.0.0 --port 9000
+uvicorn app:app --host 0.0.0.0 --port 9000 --reload
  server whisper.cpp
  build\bin\Release\whisper-server.exe ^
 -m models\ggml-small.bin ^

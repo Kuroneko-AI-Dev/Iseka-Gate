@@ -1289,6 +1289,7 @@ export class CubismShader_WebGL {
       'u_screenColor'
     );
 
+
     // 加算（PremultipliedAlpha）
     this._shaderSets[4].attributePositionLocation = this.gl.getAttribLocation(
       this._shaderSets[4].shaderProgram,

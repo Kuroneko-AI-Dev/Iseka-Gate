@@ -3,7 +3,7 @@
 /* ===========================
    REMOVE MOBILE TAP HIGHLIGHT
 =========================== */
-
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
 html,
 body,
 *{
@@ -273,6 +273,7 @@ html,body{
   padding-left:20px;
 
   border-bottom:1px solid #222;
+   font-family: 'Mochiy Pop One', sans-serif !important;
 }
 
 .chat-messages{
@@ -394,6 +395,7 @@ html,body{
     font-size:12px;
 
     font-weight:700;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 
     opacity:.7;
 
@@ -430,6 +432,7 @@ html,body{
     white-space:pre-wrap;
 
     font-size:15px;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 
 }
 
@@ -472,6 +475,7 @@ html,body{
 
 
     font-size:12px;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 
 
     cursor:pointer;
@@ -507,6 +511,7 @@ html,body{
 
 
     font-size:14px;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 
 
     opacity:.9;
@@ -551,6 +556,7 @@ html,body{
 
 
         font-size:11px;
+         font-family: 'Mochiy Pop One', sans-serif !important;
 
 
     }
@@ -564,6 +570,7 @@ html,body{
 
 
         line-height:1.5;
+         font-family: 'Mochiy Pop One', sans-serif !important;
 
 
     }
@@ -580,6 +587,7 @@ html,body{
 
 
         margin-top:10px;
+         font-family: 'Mochiy Pop One', sans-serif !important;
 
 
     }
@@ -596,6 +604,7 @@ html,body{
 
 
         padding-top:10px;
+         font-family: 'Mochiy Pop One', sans-serif !important;
 
 
     }
@@ -633,6 +642,7 @@ html,body{
     font-size:12px;
 
     white-space:nowrap;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 
 
 }
@@ -648,6 +658,7 @@ html,body{
         font-size:11px;
 
         padding:7px 12px;
+         font-family: 'Mochiy Pop One', sans-serif !important;
 
     }
 
@@ -707,6 +718,7 @@ html,body{
     font-size:16px;
 
     padding:0 4px;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 }
 
 .chat-input-box{
@@ -723,6 +735,7 @@ html,body{
     background:#1b1b1b;
 
     border-radius:30px;
+    
 }
 
 .chat-input-box input{
@@ -811,6 +824,7 @@ html,body{
     align-items:center;
 
     width:100%;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 
 }
 .signin-btn{
@@ -831,12 +845,13 @@ html,body{
     background:rgba(255,255,255,.08);
     color:#fff;
 
-    font-size:14px;
+    font-size:12px;
     font-weight:600;
 
     cursor:pointer;
 
     transition:.25s;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 }
 
 .signin-btn:hover{
@@ -922,6 +937,7 @@ html,body{
   font-size:16px;
   font-weight:600;
   color:white;
+   font-family: 'Mochiy Pop One', sans-serif !important;
 }
 
 .header-status{
@@ -962,11 +978,13 @@ html,body{
   margin:0;
   color:white;
   font-size:28px;
+   font-family: 'Mochiy Pop One', sans-serif !important;
 }
 
 .welcome-screen p{
   margin-top:10px;
   color:#999;
+   font-family: 'Mochiy Pop One', sans-serif !important;
 }
 
 .welcome-features{
@@ -980,6 +998,8 @@ html,body{
 
   width:100%;
   max-width:400px;
+   font-family: 'Mochiy Pop One', sans-serif !important;
+
 }
 
 .feature-card{
@@ -998,6 +1018,8 @@ html,body{
   color:white;
 
   transition:.2s;
+   font-family: 'Mochiy Pop One', sans-serif !important;
+
 }
 
 .feature-card svg{
@@ -1983,6 +2005,8 @@ z-index:100;
     height:100%;
   }
 
+  
+
 }
 
 /* ==========================
@@ -2605,6 +2629,7 @@ z-index:100;
   font-size:14px;
   font-weight:700;
   letter-spacing:.3px;
+  font-family: 'Mochiy Pop One', sans-serif !important;
 
   cursor:pointer;
 
@@ -2739,3 +2764,366 @@ z-index:100;
 }
 
 
+/* ========================================
+   MOBILE CHAT TOGGLE
+   ======================================== */
+
+.mobile-chat-toggle {
+  display: none;
+}
+
+.mobile-chat-hidden,
+.mobile-chat-visible {
+  /* desktop tetap normal */
+}
+
+
+/* ========================================
+   MOBILE ONLY
+   ======================================== */
+@media (max-width: 768px) {
+
+  .mobile-chat-toggle {
+    display: flex !important;
+
+    position: fixed !important;
+    top: 85px !important;
+    left: 18px !important;
+
+    width: 48px !important;
+    height: 48px !important;
+
+    z-index: 2147483647 !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+    border-radius: 50% !important;
+
+    background: #22d3ee !important;
+    color: #000 !important;
+
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  .chat-panel.mobile-chat-hidden {
+    display: none !important;
+  }
+
+  .chat-panel.mobile-chat-visible {
+    display: flex !important;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  /* ================================
+     CHAT HIDDEN
+     ================================ */
+
+  .content.chat-mobile-hidden {
+    display: block !important;
+    width: 100% !important;
+    height: calc(100vh - 60px) !important;
+    overflow: hidden !important;
+  }
+
+  .content.chat-mobile-hidden .avatar-column {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-height: 0 !important;
+
+    flex: none !important;
+  }
+
+  /* Jangan ubah ukuran chat-column.
+     Hanya sembunyikan ChatPanel-nya. */
+
+  .content.chat-mobile-hidden .chat-column {
+    width: 100% !important;
+    height: 0 !important;
+
+    overflow: visible !important;
+      /* Geser ke kiri */
+        margin-left: 0 !important;
+        margin-right: auto !important;
+  }
+
+  .content.chat-mobile-hidden .chat-panel {
+    display: none !important;
+  }
+
+
+  /* ================================
+     LIVE2D
+     ================================ */
+
+  .content.chat-mobile-hidden .live2d-container,
+  .content.chat-mobile-hidden .live2d-background,
+  .content.chat-mobile-hidden .live2d-canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+
+  /* ================================
+     CHAT OPEN
+     ================================ */
+
+  .content.chat-mobile-open {
+    display: flex !important;
+    flex-direction: column !important;
+
+    gap: 5px;
+
+    width: 100% !important;
+    height: calc(100vh - 60px) !important;
+
+    overflow: hidden !important;
+  }
+
+  .content.chat-mobile-open .avatar-column {
+    flex: 0 0 42% !important;
+
+    width: 100% !important;
+    height: auto !important;
+
+    min-height: 0 !important;
+  }
+
+  .content.chat-mobile-open .chat-column {
+    flex: 1 !important;
+
+    width: 100% !important;
+    height: auto !important;
+
+    min-height: 0 !important;
+  }
+
+}
+
+
+/* ===========================
+   CHARACTER DEFAULT BUTTON
+=========================== */
+
+.character-set-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 11px 18px;
+
+    border: 1px solid rgba(139, 92, 246, 0.45);
+    border-radius: 10px;
+
+    background: rgba(139, 92, 246, 0.12);
+    color: #c4b5fd;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.character-set-btn:hover {
+    background: rgba(139, 92, 246, 0.22);
+    border-color: rgba(139, 92, 246, 0.75);
+
+    box-shadow:
+        0 0 15px rgba(139, 92, 246, 0.15);
+}
+
+.character-set-btn:active {
+    transform: scale(0.97);
+    background: rgba(139, 92, 246, 0.3);
+}
+
+.character-set-btn:focus {
+    outline: none;
+}
+
+.character-set-btn:focus-visible {
+    outline: 2px solid rgba(167, 139, 250, 0.7);
+    outline-offset: 2px;
+}
+
+
+
+/* ========================================
+   THEME SYSTEM
+======================================== */
+
+:root {
+    /* LIGHT MODE - WARM CREAM */
+    --bg-main: #F8F6F2;
+    --bg-sidebar: #EFEAE3;
+    --bg-card: #FFFFFF;
+    --bg-input: #F1ECE6;
+
+    --text-main: #2F315B;
+    --text-secondary: #64748B;
+
+    --border: #E8DED3;
+
+    --accent: #D93B3B;
+    --accent-hover: #C92F2F;
+}
+
+
+/* ========================================
+   DARK MODE
+======================================== */
+
+[data-theme="dark"] {
+    --bg-main: #0b0b0d;
+    --bg-sidebar: #101012;
+    --bg-card: #ebebf8;
+    --bg-input: #1b1b1e;
+
+    --text-main: #ffffff;
+    --text-secondary: #a7a7ad;
+
+    --border: rgba(255, 255, 255, 0.08);
+
+    --accent: #35d8f5;
+    --accent-hover: #5de2fa;
+}
+
+
+/* ========================================
+   APPLY THEME
+======================================== */
+
+body {
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+.app {
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+.sidebar {
+    background: var(--bg-sidebar);
+    border-color: var(--border);
+}
+
+.main-content {
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+.topbar {
+    background: var(--bg-main);
+    border-color: var(--border);
+}
+
+.content {
+    background: var(--bg-main);
+}
+
+
+/* ========================================
+   THEME BUTTON
+======================================== */
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    margin: 4px auto;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--bg-card);
+    color: var(--text-main);
+
+    cursor: pointer;
+    font-size: 20px;
+
+    transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.08);
+    background: var(--bg-input);
+}
+
+
+/* ========================================
+   TRANSITION
+======================================== */
+
+body,
+.app,
+.sidebar,
+.main-content,
+.topbar,
+.content {
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}
+
+/* ========================================
+   LIGHT MODE - HEADER TEXT
+======================================== */
+
+.header-title {
+    color: var(--text-main) !important;
+}
+
+.header-status {
+    color: var(--text-secondary) !important;
+}
+
+.header-status {
+    color: var(--text-secondary) !important;
+}
+
+.status-dot {
+    background: #22c55e;
+}
+
+/* ========================================
+   LIGHT MODE - ACCOUNT
+======================================== */
+
+.user-name {
+    color: var(--text-main) !important;
+}
+
+.user-status {
+    color: var(--text-secondary) !important;
+}
+
+.signin-btn {
+    color: var(--text-main) !important;
+}
+
+.signin-btn svg {
+    color: var(--text-main) !important;
+}
+
+/* CHAT HEADER - LIGHT MODE */
+[data-theme="light"] .chat-header {
+    color: #ffffff !important;
+}

@@ -4,7 +4,7 @@ from .queue import get_comment
 from .websocket import broadcast
 
 from gpt_service import ask_gpt
-from tts_manager import generate_kokoro_tts
+from tts_manager import generate_supertonic_tts
 
 
 
@@ -43,7 +43,7 @@ async def start_ai_worker():
 
                 Kamu memiliki tubuh virtual
                 karakter anime cewek imut
-                rambut biru perak dan telinga kucing.
+                rambut putih dan mata biru terang. dan memakai kimono.
 
                 Gaya bicara:
                 imut, manja, kadang nakal,
@@ -52,7 +52,7 @@ async def start_ai_worker():
                 Jawab komentar TikTok
                 dengan singkat dan natural.
 
-                Jangan terlalu panjang.
+                Jangan terlalu panjang singkat tapi jelas.
                 """
 
             },
@@ -100,7 +100,7 @@ async def start_ai_worker():
 
             audio = await asyncio.to_thread(
 
-             generate_kokoro_tts,
+             generate_supertonic_tts,
 
                 answer
 

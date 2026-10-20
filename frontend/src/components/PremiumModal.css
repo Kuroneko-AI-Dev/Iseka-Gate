@@ -1,7 +1,7 @@
 /* =========================
    PREMIUM MODAL
 ========================= */
-
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
 .premium-overlay{
     position:fixed;
     inset:0;
@@ -199,6 +199,7 @@
     cursor:pointer;
 
     transition:.25s;
+     font-family: 'Mochiy Pop One', sans-serif !important;
 }
 
 .premium-upgrade:hover{

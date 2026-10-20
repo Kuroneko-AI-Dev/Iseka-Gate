@@ -26,7 +26,7 @@ import {
   Brain,
   Mic,
   Settings,
-  Crown,House,Radio
+  Crown,House,Radio,Sun,Moon
 } from "lucide-react";
 import { API_URL } from "./config";
 import "./App.css";
@@ -62,6 +62,16 @@ export default function App() {
   const [page, setPage] = useState("login");
   const [loading,setLoading]=useState(false);
   const [enter,setEnter]=useState(false);
+  const [showChatMobile, setShowChatMobile] = useState(false);
+  const [showAvatarSettings, setShowAvatarSettings] = useState(false);
+  const [theme, setTheme] = useState(() => {
+  return localStorage.getItem("theme") || "dark";
+});
+  const [avatarScale, setAvatarScale] = useState(() => {
+      const saved = localStorage.getItem("avatarScale");
+      return saved !== null ? Number(saved) : 1.35;
+  });
+ 
 
 
 const isAndroid =
@@ -101,6 +111,10 @@ useEffect(()=>{
 },[]);
 
 
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
   const [user, setUser] = useState(()=>{
     const saved = localStorage.getItem("user");
 
@@ -144,16 +158,43 @@ useEffect(()=>{
     })
     .catch(console.log);
 
-
-
     getConversations()
-    .then(data=>{
+    .then(async data=>{
+
+      console.log("CONVERSATIONS:", data);
 
       setConversations(data);
 
+
+      if(data.length > 0){
+
+        const lastChat = data[0];
+
+        console.log("OPEN CHAT ID:", lastChat.id);
+
+
+        const messagesData = await getMessages(
+          lastChat.id
+        );
+
+
+        console.log("RESTORE MESSAGE:", messagesData);
+
+
+        setConversationId(lastChat.id);
+
+
+        setMessages(
+          messagesData.map(m=>({
+            role:m.role,
+            content:m.content
+          }))
+        );
+
+      }
+
     })
     .catch(console.log);
-
   }
 
 },[isLoggedIn]);
@@ -265,7 +306,7 @@ useEffect(()=>{
 
 
 
-    // tampilkan notif kokoro
+    // tampilkan notif supertonic
     if(result.tts_notice){
 
       setMessages(prev=>[
@@ -419,8 +460,6 @@ useEffect(()=>{
 
       <aside className="sidebar">
 
-
-
         <div className="logo">
 
           <img
@@ -486,6 +525,23 @@ useEffect(()=>{
           <Settings />
         </button>
 
+        {/* THEME TOGGLE */}
+      <button
+          className="theme-toggle"
+          onClick={() => {
+            setTheme(prev =>
+              prev === "dark" ? "light" : "dark"
+            );
+          }}
+          title={theme === "dark" ? "Light Mode" : "Dark Mode"}
+        >
+          {theme === "dark" ? (
+            <Sun size={21} />
+          ) : (
+            <Moon size={21} />
+          )}
+        </button>
+
         <button
             onClick={()=>{
                 setCurrentPage("live");
@@ -493,9 +549,9 @@ useEffect(()=>{
         >
             <Radio />
         </button>
-
-
         </div>
+
+     
               
         <div className="account-section">
 
@@ -654,7 +710,7 @@ useEffect(()=>{
 
        
 
-       <div className="content">
+       <div className={`content ${showChatMobile ? "chat-mobile-open" : "chat-mobile-hidden"}`}>
 
         
           <div className="avatar-column">
@@ -793,7 +849,11 @@ useEffect(()=>{
 
             )}
 
-            <AvatarStage />
+           <AvatarStage
+                avatarScale={avatarScale}
+                setAvatarScale={setAvatarScale}
+              
+            />
             <CameraPreview
                 ref={cameraRef}
                 enabled={visionEnabled}
@@ -814,6 +874,14 @@ useEffect(()=>{
               </button>
           )}
 
+              <button
+                className="mobile-chat-toggle"
+                onClick={() => setShowChatMobile(prev => !prev)}
+              >
+                <MessageCircle />
+              </button>
+
+
   <ChatPanel
     messages={messages}
     input={input}
@@ -824,7 +892,9 @@ useEffect(()=>{
     setResearchMode={setResearchMode}
     visionEnabled={visionEnabled}
     setVisionEnabled={setVisionEnabled}
+    className={showChatMobile ? "mobile-chat-visible" : "mobile-chat-hidden"}
   />
+
 
   {currentPage === "settings" && (
     <div className="settings-overlay">
@@ -840,6 +910,9 @@ useEffect(()=>{
       <SettingsPage
           user={user}
           onOpenAdmin={() => setCurrentPage("admin")}
+          avatarScale={avatarScale}
+          setAvatarScale={setAvatarScale}
+          
       />
 
     </div>

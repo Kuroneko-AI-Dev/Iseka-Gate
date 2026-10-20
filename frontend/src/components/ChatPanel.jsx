@@ -22,7 +22,8 @@ export default function ChatPanel({
   researchMode,
   setResearchMode,
   visionEnabled,
-  setVisionEnabled
+  setVisionEnabled,
+  className = ""
 }) {
 
 
@@ -32,7 +33,7 @@ export default function ChatPanel({
 
   return (
 
-    <div className="chat-panel">
+    <div className={`chat-panel ${className}`}>
 
 
       <div className="chat-header">

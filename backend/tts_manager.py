@@ -1,7 +1,7 @@
 import traceback
 
 from gemini_tts import generate_tts as gemini_generate
-from kokoro_tts import generate_kokoro_tts
+from super_tonic_tts import generate_supertonic_tts
 
 
 def generate_tts(
@@ -18,20 +18,16 @@ def generate_tts(
 
         return audio
 
-
     except Exception as e:
 
         print("GEMINI FAILED")
         print(e)
 
+        print("SWITCH TO SUPERTONIC")
 
-        print("SWITCH TO KOKORO")
-
-
-        audio = generate_kokoro_tts(
+        audio = generate_supertonic_tts(
             text,
-            voice="af_heart"
+            voice="F1"
         )
-
 
         return audio

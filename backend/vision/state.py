@@ -1,29 +1,31 @@
+from datetime import datetime
+
+
 class VisionState:
 
     def __init__(self):
 
-        # kamera terakhir yang diproses
+        # Kamera terakhir
         self.last_camera = None
 
-        # objek terakhir dari YOLO
+        # Hasil vision terakhir
         self.last_objects = []
-
-        # hasil caption terakhir dari BLIP
         self.last_caption = ""
-
-        # teks terakhir dari OCR
         self.last_text = ""
 
-        # waktu terakhir vision berjalan
-        self.last_update = None
+        # Ringkasan scene
+        self.last_scene = ""
 
+        # Waktu update
+        self.last_update = None
 
     def update(
         self,
         camera=None,
         objects=None,
         caption=None,
-        text=None
+        text=None,
+        scene=None
     ):
 
         if camera is not None:
@@ -37,3 +39,40 @@ class VisionState:
 
         if text is not None:
             self.last_text = text
+
+        if scene is not None:
+            self.last_scene = scene
+
+        self.last_update = datetime.now()
+
+    def get_object_labels(self):
+
+        labels = []
+
+        for obj in self.last_objects:
+
+            if isinstance(obj, dict):
+
+                label = obj.get("label")
+
+                if label:
+                    labels.append(label)
+
+            else:
+
+                labels.append(str(obj))
+
+        return labels
+
+    def has_object(self, label):
+
+        return label in self.get_object_labels()
+
+    def clear(self):
+
+        self.last_camera = None
+        self.last_objects = []
+        self.last_caption = ""
+        self.last_text = ""
+        self.last_scene = ""
+        self.last_update = None

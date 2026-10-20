@@ -9,7 +9,8 @@ import {
     Info,
     Shield,
     ChevronDown,
-    Check
+    Check,
+    Sparkles
 } from "lucide-react";
 
 import "./SettingsPage.css";
@@ -18,10 +19,17 @@ import ManageMemory from "./settings/ManageMemory";
 
 export default function SettingsPage({
     user,
-    onOpenAdmin
+    onOpenAdmin,
+    avatarScale,
+    setAvatarScale
 }){
 
     const [tab,setTab]=useState("general");
+  
+    const [avatarY, setAvatarY] = useState(() => {
+    const saved = localStorage.getItem("avatarY");
+    return saved !== null ? Number(saved) : -14.4;
+});
     const [voice,setVoice]=useState(
 
     localStorage.getItem("voice") ||
@@ -44,14 +52,96 @@ export default function SettingsPage({
     localStorage.getItem("style") || ""
 );
 
+  const changeScale = (amount) => {
+    const newScale = Math.max(
+        0.5,
+        Math.min(
+            2.5,
+            Number((avatarScale + amount).toFixed(2))
+        )
+    );
+
+    setAvatarScale(newScale);
+};
 
 
+const changeY = (amount) => {
+    const newY = Number(
+        (avatarY + amount).toFixed(1)
+    );
+
+    if (window.moveLive2DY) {
+        window.moveLive2DY(
+            newY - avatarY
+        );
+    }
+
+    setAvatarY(newY);
+
+    localStorage.setItem(
+        "avatarY",
+        newY
+    );
+};
+
+
+const setScaleDefault = () => {
+    const defaultScale = 1.0;
+
+    // Trigger scale yang sama seperti slider
+    setAvatarScale(defaultScale);
+
+    // Simpan
+    localStorage.setItem(
+        "avatarScale",
+        defaultScale
+    );
+};
+
+
+const setYDefault = () => {
+    const defaultY = -10.2;
+
+    // Trigger Y yang sama seperti tombol/slider Y
+    if (window.moveLive2DY) {
+        window.moveLive2DY(
+            defaultY - avatarY
+        );
+    }
+
+    // Update React
+    setAvatarY(defaultY);
+
+    // Simpan
+    localStorage.setItem(
+        "avatarY",
+        defaultY
+    );
+};
+
+
+const setCharacterDefault = () => {
+    // Jalankan DEFAULT SCALE
+    setScaleDefault();
+
+    // Jalankan DEFAULT Y
+    setYDefault();
+};
     return(
 
         <div className="settings-page">
+            
 
             <div className="settings-sidebar">
-
+               <button
+                    className={`settings-nav-item ${
+                        tab === "character" ? "active" : ""
+                    }`}
+                    onClick={() => setTab("character")}
+                >
+                    <Sparkles size={18} />
+                    <span>Character</span>
+                </button>
                 <button
                     className={tab==="general"?"active":""}
                     onClick={()=>setTab("general")}
@@ -108,6 +198,9 @@ export default function SettingsPage({
                     <span>About</span>
                 </button>
 
+       
+ 
+
         <div
             className="admin-dashboard-btn"
             onClick={() => {
@@ -131,6 +224,145 @@ export default function SettingsPage({
             </div>
 
             <div className="settings-content">
+                
+            {tab === "character" && (
+    <div className="character-settings">
+        <h2>Character</h2>
+
+    
+
+       <div className="setting-card">
+
+    <h4>Character Size</h4>
+
+    <p>
+        Adjust the size of your AI companion.
+    </p>
+
+    <div className="avatar-scale-control">
+
+        <div className="avatar-scale-label">
+
+            <span>Scale</span>
+
+            <span>
+                {Math.round(avatarScale * 100)}%
+            </span>
+
+        </div>
+
+        <div className="avatar-number-controls">
+
+            <button
+                type="button"
+                onClick={() => changeScale(-0.05)}
+            >
+                −
+            </button>
+
+            <input
+                type="range"
+                min="0.5"
+                max="2.5"
+                step="0.05"
+                value={avatarScale}
+                onChange={(e) =>
+                    setAvatarScale(
+                        Number(e.target.value)
+                    )
+                }
+            />
+
+            <button
+                type="button"
+                onClick={() => changeScale(0.05)}
+            >
+                +
+            </button>
+
+        </div>
+
+    </div>
+
+   <button
+    type="button"
+    className="character-set-btn"
+    onClick={setCharacterDefault}
+>
+    Set Character Default
+</button>
+
+</div>
+        <div className="setting-card">
+
+    <h4>Character Position</h4>
+
+    <p>
+        Move your AI companion up or down.
+    </p>
+
+    <div className="avatar-scale-control">
+
+        <div className="avatar-scale-label">
+
+            <span>Position Y</span>
+
+            <span>
+                {avatarY}
+            </span>
+
+        </div>
+
+        <button
+        type="button"
+        onClick={() => changeY(-0.1)}
+    >
+        −
+    </button>
+
+        <input
+            type="range"
+            min="-15"
+            max="2"
+            step="0.1"
+            value={avatarY}
+            onChange={(e) => {
+                const value = Number(e.target.value);
+
+                setAvatarY(value);
+
+                    localStorage.setItem(
+                        "avatarY",
+                        value
+                    );
+
+                    if (window.moveLive2DY) {
+                        window.moveLive2DY(
+                            value - avatarY
+                        );
+                    }
+            }}
+        />
+
+         <button
+        type="button"
+        onClick={() => changeY(0.1)}
+    >
+        +
+    </button>
+
+    </div>
+ 
+    
+
+</div>
+
+</div>
+
+
+   
+    
+)}
 
                 {tab==="general" && (
                     <>

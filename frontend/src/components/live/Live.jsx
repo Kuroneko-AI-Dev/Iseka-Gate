@@ -27,7 +27,69 @@ export default function Live({ user, onExit }) {
 
     const [queue, setQueue] = useState([]);
 
+    const [username, setUsername] = useState("kuroaidev");
 
+    const connectLive = async () => {
+        try {
+
+            await fetch(`${API_URL}/live/connect`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify({
+                    username
+                })
+            });
+
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const disconnectLive = async () => {
+
+        try {
+
+            await fetch(`${API_URL}/live/disconnect`, {
+                method: "POST",
+                headers: {
+                    Authorization:
+                        `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+
+        } catch (e) {
+            console.log(e);
+        }
+
+    };
+
+    const loadStatus = async () => {
+
+        try {
+
+            const res = await fetch(
+                `${API_URL}/live/status`,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            );
+
+            const data = await res.json();
+
+            console.log(data);
+
+        } catch (e) {
+            console.log(e);
+        }
+
+    };
 
     useEffect(()=>{
 
@@ -62,7 +124,9 @@ export default function Live({ user, onExit }) {
                 const data =
                     JSON.parse(event.data);
 
-
+                console.log(
+                    "MESSAGE MASUK"
+                );
 
                 console.log(
                     "LIVE DATA:",
@@ -70,32 +134,33 @@ export default function Live({ user, onExit }) {
                 );
 
 
-
                 if(data.type === "ai_reply"){
 
+                const audioUrl =
+                    `${API_URL}/${data.audio}`;
 
-                    const audioUrl =
-                        `${API_URL}/${data.audio}`;
+                const audio = new Audio(audioUrl);
 
-                    audio.play();
+                audio.volume = 1.0;
 
-                     // gunakan sistem lip sync yang sama
-
-                    if(window.live2dModel){
-
-
-                        window.live2dModel.startLipSync(
-                            audioUrl
-                        );
-
-
-                    }
+                audio.play().catch(err => {
+                    console.log(
+                        "Audio gagal diputar:",
+                        err
+                    );
+                });
 
 
+                if(window.live2dModel){
 
+                    window.live2dModel.startLipSync(
+                        audioUrl
+                    );
 
                 }
 
+            }
+              
 
             if(data.comment){
 
@@ -283,21 +348,46 @@ export default function Live({ user, onExit }) {
 
                     <div className="live-card">
 
+                    <h3>TikTok Live</h3>
 
-                        <h3>
-                            TikTok Status
-                        </h3>
+                    <input
+                        value={username}
+                        onChange={(e)=>setUsername(e.target.value)}
+                        placeholder="TikTok Username"
+                    />
 
+                    <div className="live-control-buttons">
 
-                        <p>
+                        <button
+                            className="connect-btn"
+                            onClick={connectLive}
+                        >
+                            Connect
+                        </button>
 
-                            🟢 {status}
-
-                        </p>
-
+                        <button
+                            className="disconnect-btn"
+                            onClick={disconnectLive}
+                        >
+                            Disconnect
+                        </button>
 
                     </div>
 
+                    <div
+                        className={`live-status ${
+                            status === "Connected"
+                                ? "connected"
+                                : ""
+                        }`}
+                    >
+                        <div className="live-status-dot"></div>
+
+                        <span>{status}</span>
+
+                    </div>
+
+                </div>
 
 
 

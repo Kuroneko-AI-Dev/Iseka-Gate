@@ -10,6 +10,10 @@ export default function Live2DCanvas(){
 
     useEffect(()=>{
 
+        console.log(
+            "LIVE2D EFFECT JALAN"
+        );
+
 
         // cegah React StrictMode start 2x
         if(started.current){

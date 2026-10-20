@@ -97,3 +97,88 @@
     padding:18px;
 
 }
+
+/* ===========================
+   TikTok Live Control
+=========================== */
+
+.live-card input {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 12px;
+
+    border: 1px solid #333;
+    border-radius: 10px;
+
+    background: #1e1e1e;
+    color: white;
+
+    outline: none;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.live-card input:focus {
+    border-color: #4ea3ff;
+}
+
+.live-control-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.live-control-buttons button {
+    flex: 1;
+
+    padding: 10px;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+    transition: .2s;
+}
+
+.connect-btn {
+    background: #1db954;
+    color: white;
+}
+
+.connect-btn:hover {
+    background: #169846;
+}
+
+.disconnect-btn {
+    background: #ff4d4f;
+    color: white;
+}
+
+.disconnect-btn:hover {
+    background: #d9363e;
+}
+
+.live-status {
+    margin-top: 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+}
+
+.live-status-dot {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #ff4d4f;
+}
+
+.live-status.connected .live-status-dot {
+    background: #1db954;
+}

@@ -1165,4 +1165,89 @@ input[type="range"]{
 
 }
 
+/* ===========================
+   CHARACTER SETTINGS
+=========================== */
+
+.avatar-scale-control{
+
+    margin-top:18px;
+
+    padding:18px;
+
+    border-radius:14px;
+
+    background:#202020;
+
+    border:1px solid #2b2b2b;
+
+}
+
+.avatar-scale-label{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:8px;
+
+    color:#ddd;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.avatar-scale-label span:last-child{
+
+    color:#35a6df;
+
+    font-weight:700;
+
+    font-size:14px;
+
+}
+
+.avatar-scale-control input[type="range"]{
+
+    width:100%;
+
+    margin-top:12px;
+
+    cursor:pointer;
+
+    accent-color:#35a6df;
+
+}
+
+/* =========================================
+   CHARACTER SETTINGS - TRANSPARENT MODE
+========================================= */
+
+.settings-page:has(.character-settings),
+.settings-page:has(.character-settings) .settings-content,
+.settings-page:has(.character-settings) .character-settings {
+    background: transparent !important;
+}
+
+/* Hilangkan background panel utama */
+.settings-page:has(.character-settings) .settings-content {
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+/* Character card tetap terlihat */
+.character-settings .setting-card {
+    background: rgba(15, 15, 25, 0.75) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Sidebar tetap normal */
+.settings-sidebar {
+    background: rgba(10, 10, 18, 0.95);
+}
 }

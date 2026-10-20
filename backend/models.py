@@ -7,6 +7,8 @@ from sqlalchemy.sql import func
 from sqlalchemy import ForeignKey
 from database import Base
 from sqlalchemy import Boolean
+from datetime import datetime
+from sqlalchemy.orm import relationship
 
 
 class User(Base):
@@ -62,6 +64,13 @@ class User(Base):
         server_default=func.now()
     )
 
+    vision_memories = relationship(
+        "VisionMemory",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )
+
 class Conversation(Base):
 
     __tablename__ = "conversations"
@@ -90,6 +99,13 @@ class Conversation(Base):
     created_at = Column(
         DateTime,
         server_default=func.now()
+    )
+
+    vision_memories = relationship(
+        "VisionMemory",
+        back_populates="conversation",
+        cascade="all, delete-orphan",
+        passive_deletes=True
     )
 
 
@@ -164,4 +180,65 @@ class Memory(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+
+class VisionMemory(Base):
+    __tablename__ = "vision_memory"
+
+    id = Column(
+        Integer,
+        primary_key=True
+    )
+
+    user_id = Column(
+        Integer,
+        ForeignKey(
+            "users.id",
+            ondelete="CASCADE"
+        ),
+        nullable=False
+    )
+
+    conversation_id = Column(
+        Integer,
+        ForeignKey(
+            "conversations.id",
+            ondelete="CASCADE"
+        ),
+        nullable=False
+    )
+
+    camera = Column(
+        String,
+        default=""
+    )
+
+    caption = Column(
+        Text,
+        default=""
+    )
+
+    objects = Column(
+        Text,
+        default=""
+    )
+
+    ocr_text = Column(
+        Text,
+        default=""
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    user = relationship(
+        "User",
+        back_populates="vision_memories"
+    )
+
+    conversation = relationship(
+        "Conversation",
+        back_populates="vision_memories"
     )

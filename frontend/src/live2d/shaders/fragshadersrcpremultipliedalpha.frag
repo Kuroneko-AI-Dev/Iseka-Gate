@@ -12,6 +12,7 @@ uniform vec4 u_baseColor; //v2f.color
 uniform sampler2D s_texture0; //_MainTex
 uniform vec4 u_multiplyColor;
 uniform vec4 u_screenColor;
+uniform float u_bulge;
 
 void main()
 {

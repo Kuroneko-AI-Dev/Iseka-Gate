@@ -1,7 +1,21 @@
+import os
 import requests
+from dotenv import load_dotenv
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+load_dotenv()
+
+
+OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY")
+
+OLLAMA_URL = "https://ollama.com/api/generate"
+
 MODEL_NAME = "minimax-m3:cloud"
+
+
+HEADERS = {
+    "Authorization": f"Bearer {OLLAMA_API_KEY}",
+    "Content-Type": "application/json"
+}
 
 
 def translate_jp_to_id(text):
@@ -19,16 +33,33 @@ Teks:
 {text}
 """
 
+
     response = requests.post(
+
         OLLAMA_URL,
+
+        headers=HEADERS,
+
         json={
             "model": MODEL_NAME,
             "prompt": prompt,
-            "stream": False
+            "stream": False,
+            "options": {
+                "temperature": 0.1
+            }
         },
+
         timeout=300
     )
 
+
     response.raise_for_status()
 
-    return response.json()["response"].strip()
+
+    data = response.json()
+
+
+    return data.get(
+        "response",
+        ""
+    ).strip()

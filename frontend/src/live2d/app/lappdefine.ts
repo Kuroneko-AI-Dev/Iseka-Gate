@@ -18,18 +18,18 @@ export const CanvasSize: { width: number; height: number } | 'auto' = 'auto';
 export const CanvasNum = 1;
 
 // 画面
-export const ViewScale = 1.9;
-export const ViewMaxScale = 3.0;
+export const ViewScale = 5.50;
+export const ViewMaxScale = 5.0;
 export const ViewMinScale = 1.0;
 
 export const ViewLogicalLeft = -1.0;
 export const ViewLogicalRight = 1.0;
-export const ViewLogicalBottom = -8.0;
-export const ViewLogicalTop = 0.3;
+export const ViewLogicalBottom = -10.0;
+export const ViewLogicalTop = -1.8;
 
 export const ViewLogicalMaxLeft = -2.0;
 export const ViewLogicalMaxRight = 2.0;
-export const ViewLogicalMaxBottom = -2.0;
+export const ViewLogicalMaxBottom = -10.0;
 export const ViewLogicalMaxTop = 2.0;
 
 // 相対パス
@@ -51,7 +51,7 @@ export const PowerImageName = 'CloseNormal.png';
 // モデルを配置したディレクトリ名の配列
 // ディレクトリ名とmodel3.jsonの名前を一致させておくこと
 export const ModelDir: string[] = [
-  'aoi',
+  'Aoi-Chisei0',
 ];
 export const ModelDirSize: number = ModelDir.length;
 

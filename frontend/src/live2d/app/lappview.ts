@@ -52,10 +52,14 @@ export class LAppView {
     const top: number = LAppDefine.ViewLogicalRight;
 
     this._viewMatrix.setScreenRect(left, right, bottom, top); // デバイスに対応する画面の範囲。 Xの左端、Xの右端、Yの下端、Yの上端
-    this._viewMatrix.scale(LAppDefine.ViewScale, LAppDefine.ViewScale);
+    this._avatarScale = 1.0;
 
+    this._viewMatrix.scale(
+        LAppDefine.ViewScale * this._avatarScale,
+        LAppDefine.ViewScale * this._avatarScale
+    );
     // Geser kamera ke bawah
-    this._viewMatrix.translateRelative(0.0, -0.20);
+    this._viewMatrix.translateRelative(0.0, -0.57);
 
     this._deviceToScreen.loadIdentity();
     if (width > height) {
@@ -112,6 +116,46 @@ export class LAppView {
     lapplive2dmanager.onUpdate();
   }
 }
+public setAvatarScale(scale: number): void {
+    console.log("AVATAR SCALE DIPANGGIL:", scale);
+    this._avatarScale = scale;
+
+    const canvas = this._subdelegate.getCanvas();
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    const ratio = width / height;
+
+    const left = -ratio;
+    const right = ratio;
+    const bottom = LAppDefine.ViewLogicalBottom;
+    const top = LAppDefine.ViewLogicalTop;
+    this._viewMatrix.loadIdentity();
+
+    this._viewMatrix.setScreenRect(
+        left,
+        right,
+        bottom,
+        top
+    );
+
+  
+    this._viewMatrix.scale(
+        LAppDefine.ViewScale * scale,
+        LAppDefine.ViewScale * scale
+    );
+
+    this._viewMatrix.setMaxScale(
+        LAppDefine.ViewMaxScale
+    );
+
+    this._viewMatrix.setMinScale(
+        LAppDefine.ViewMinScale
+    );
+}
+
+
   /**
    * 画像の初期化を行う。
    */
@@ -182,6 +226,7 @@ export class LAppView {
       pointX * window.devicePixelRatio,
       pointY * window.devicePixelRatio
     );
+    
   }
 
   /**
@@ -238,7 +283,10 @@ export class LAppView {
    * X座標をView座標に変換する。
    *
    * @param deviceX デバイスX座標
+   * 
+  
    */
+ 
   public transformViewX(deviceX: number): number {
     const screenX: number = this._deviceToScreen.transformX(deviceX); // 論理座標変換した座標を取得。
     return this._viewMatrix.invertTransformX(screenX); // 拡大、縮小、移動後の値。
@@ -271,9 +319,14 @@ export class LAppView {
     return this._deviceToScreen.transformY(deviceY);
   }
 
+
+  
   _touchManager: TouchManager; // タッチマネージャー
   _deviceToScreen: CubismMatrix44; // デバイスからスクリーンへの行列
   _viewMatrix: CubismViewMatrix; // viewMatrix
+  private _avatarScale: number = 1.0;
+  private _avatarPosX: number = 0.0;
+  private _avatarPosY: number = 0.0;
   _programId: WebGLProgram; // シェーダID
   _back: LAppSprite; // 背景画像
   _gear: LAppSprite; // ギア画像

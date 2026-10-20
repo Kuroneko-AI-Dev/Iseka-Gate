@@ -1,3 +1,5 @@
+import asyncio
+
 from .schemas import VisionResult
 from .state import VisionState
 from .caption import BlipCaption
@@ -34,48 +36,91 @@ class VisionPipeline:
         faces = []
         objects = []
         texts = []
-        caption = ""
+        caption = "No visual description."
 
         # Kamera depan
         if camera == "user":
 
-            faces = self.run_face(image)
+            faces = await asyncio.to_thread(
+                self.run_face,
+                image
+            )
 
         # Preview kamera belakang
         elif mode == "preview":
 
             pass
 
-        # Deteksi objek
+        # Vision saja
         elif mode == "vision":
 
-            objects = self.run_yolo(image)
+            objects, caption = await asyncio.gather(
 
-            caption = self.run_blip(image)
+                asyncio.to_thread(
+                    self.run_yolo,
+                    image
+                ),
+
+                asyncio.to_thread(
+                    self.run_blip,
+                    image
+                )
+
+            )
+
+            objects = self.unique_objects(objects)
 
         # OCR saja
         elif mode == "ocr":
 
-            texts = self.run_ocr(image)
+            texts = await asyncio.to_thread(
+                self.run_ocr,
+                image
+            )
+
+            texts = self.clean_texts(texts)
 
         # Vision lengkap
         elif mode == "all":
 
-            objects = self.run_yolo(image)
+            objects, texts, caption = await asyncio.gather(
 
-            texts = self.run_ocr(image)
+                asyncio.to_thread(
+                    self.run_yolo,
+                    image
+                ),
 
-            caption = self.run_blip(image)
+                asyncio.to_thread(
+                    self.run_ocr,
+                    image
+                ),
 
+                asyncio.to_thread(
+                    self.run_blip,
+                    image
+                )
+
+            )
+
+            objects = self.unique_objects(objects)
+            texts = self.clean_texts(texts)
+
+            scene = self.build_scene_summary(
+                caption,
+                objects,
+                texts
+            )
 
             self.state.update(
+
                 camera=camera,
+
                 objects=objects,
+
                 caption=caption,
-                text="\n".join(
-                    item["text"]
-                    for item in texts
-                )
+
+                text="\n".join(scene["text"])
+
             )
 
         return self.build_result(
@@ -104,7 +149,15 @@ class VisionPipeline:
         image
     ):
 
-        return self.yolo.detect(image)
+        result = self.yolo.detect(image)
+
+        print("=== YOLO OUTPUT ===")
+        print(result)
+        print("===================")
+
+        return result
+
+        
 
     def run_ocr(
         self,
@@ -118,7 +171,99 @@ class VisionPipeline:
         image
     ):
 
-        return self.blip.generate(image)
+        return self.blip.generate(
+            image,
+            detailed=True
+        )
+
+    def clean_texts(
+        self,
+        texts
+    ):
+
+        result = []
+
+        for item in texts:
+
+            text = item["text"].strip()
+
+            if len(text) < 2:
+                continue
+
+            result.append(item)
+
+        return result
+    
+   # file: vision/pipeline.py
+
+    def unique_objects(
+        self,
+        objects
+    ):
+
+        unique = []
+
+        seen = set()
+
+
+        for obj in objects:
+
+            if not isinstance(obj, dict):
+                continue
+
+
+            label = (
+                obj.get("label")
+                or obj.get("name")
+            )
+
+
+            if not label:
+                continue
+
+
+            if label not in seen:
+
+                seen.add(label)
+
+                obj["label"] = label
+
+                unique.append(obj)
+
+
+        return unique
+    def build_scene_summary(
+        self,
+        caption,
+        objects,
+        texts
+    ):
+
+        return {
+
+            "caption": caption,
+
+            "objects": [
+
+                obj["label"]
+
+                for obj in objects
+
+            ],
+
+            "text": [
+
+                item["text"]
+
+                for item in texts
+
+            ],
+
+            "object_count": len(objects),
+
+            "text_count": len(texts)
+
+        }
 
     def build_result(
         self,
@@ -140,8 +285,11 @@ class VisionPipeline:
             caption=caption,
 
             text="\n".join(
+
                 item["text"]
+
                 for item in texts
+
             ),
 
             comment="",

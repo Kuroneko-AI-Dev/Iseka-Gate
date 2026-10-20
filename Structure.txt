@@ -261,8 +261,141 @@ frontend/
 # Project Structure
 
 ```
-kokoro_service/
+# Project Structure
+
+```
+supertone/
+├── supertonic
+│   ├── cpp
+│   │   ├── assets
+│   │   ├── CMakeLists.txt
+│   │   ├── example_onnx.cpp
+│   │   ├── helper.cpp
+│   │   ├── helper.h
+│   │   └── README.md
+│   ├── csharp
+│   │   ├── assets
+│   │   ├── ExampleONNX.cs
+│   │   ├── Helper.cs
+│   │   ├── README.md
+│   │   └── Supertonic.csproj
+│   ├── flutter
+│   │   ├── lib
+│   │   │   ├── helper.dart
+│   │   │   └── main.dart
+│   │   ├── macos
+│   │   │   ├── Flutter
+│   │   │   │   ├── Flutter-Debug.xcconfig
+│   │   │   │   ├── Flutter-Release.xcconfig
+│   │   │   │   └── GeneratedPluginRegistrant.swift
+│   │   │   ├── Runner
+│   │   │   │   ├── Assets.xcassets
+│   │   │   │   │   └── AppIcon.appiconset
+│   │   │   │   ├── Base.lproj
+│   │   │   │   │   └── MainMenu.xib
+│   │   │   │   ├── Configs
+│   │   │   │   │   ├── AppInfo.xcconfig
+│   │   │   │   │   ├── Debug.xcconfig
+│   │   │   │   │   ├── Release.xcconfig
+│   │   │   │   │   └── Warnings.xcconfig
+│   │   │   │   ├── AppDelegate.swift
+│   │   │   │   ├── DebugProfile.entitlements
+│   │   │   │   ├── Info.plist
+│   │   │   │   ├── MainFlutterWindow.swift
+│   │   │   │   └── Release.entitlements
+│   │   │   ├── RunnerTests
+│   │   │   │   └── RunnerTests.swift
+│   │   │   ├── Podfile
+│   │   │   └── Podfile.lock
+│   │   ├── analysis_options.yaml
+│   │   ├── assets
+│   │   ├── pubspec.lock
+│   │   ├── pubspec.yaml
+│   │   └── README.md
+│   ├── go
+│   │   ├── assets
+│   │   ├── example_onnx.go
+│   │   ├── go.mod
+│   │   ├── go.sum
+│   │   ├── helper.go
+│   │   └── README.md
+│   ├── img
+│   │   ├── metrics
+│   │   │   ├── model_size_comparison.png
+│   │   │   ├── runtime_cpu_gpu_latency_memory.png
+│   │   │   ├── s3_vs_measured_wer_range_voxcpm2.png
+│   │   │   ├── s3_vs_measured_wer_range.png
+│   │   │   └── supertonic2_vs_3_comparison.png
+│   │   ├── supertonic_preview_0.1.jpg
+│   │   ├── Supertonic3_HeroImage.png
+│   │   └── voicebuilder_img.png
+│   ├── ios
+│   │   ├── ExampleiOSApp
+│   │   │   ├── App.swift
+│   │   │   ├── AudioPlayer.swift
+│   │   │   ├── ContentView.swift
+│   │   │   ├── Info.plist
+│   │   │   ├── project.yml
+│   │   │   ├── TTSService.swift
+│   │   │   └── TTSViewModel.swift
+│   │   └── README.md
+│   ├── java
+│   │   ├── assets
+│   │   ├── ExampleONNX.java
+│   │   ├── Helper.java
+│   │   ├── pom.xml
+│   │   └── README.md
+│   ├── nodejs
+│   │   ├── assets
+│   │   ├── example_onnx.js
+│   │   ├── helper.js
+│   │   ├── package.json
+│   │   └── README.md
+│   ├── py
+│   │   ├── tts_onnx.egg-info
+│   │   │   ├── dependency_links.txt
+│   │   │   ├── PKG-INFO
+│   │   │   ├── requires.txt
+│   │   │   ├── SOURCES.txt
+│   │   │   └── top_level.txt
+│   │   ├── assets
+│   │   ├── example_onnx.py
+│   │   ├── example_pypi.py
+│   │   ├── helper.py
+│   │   ├── pyproject.toml
+│   │   ├── README.md
+│   │   ├── requirements.txt
+│   │   └── uv.lock
+│   ├── rust
+│   │   ├── src
+│   │   │   ├── example_onnx.rs
+│   │   │   └── helper.rs
+│   │   ├── assets
+│   │   ├── Cargo.toml
+│   │   └── README.md
+│   ├── swift
+│   │   ├── Sources
+│   │   │   ├── ExampleONNX.swift
+│   │   │   └── Helper.swift
+│   │   ├── assets
+│   │   ├── Package.resolved
+│   │   ├── Package.swift
+│   │   └── README.md
+│   ├── web
+│   │   ├── assets
+│   │   ├── helper.js
+│   │   ├── index.html
+│   │   ├── main.js
+│   │   ├── package.json
+│   │   ├── README.md
+│   │   ├── style.css
+│   │   └── vite.config.js
+│   ├── LICENSE
+│   ├── README.md
+│   └── test_all.sh
 ├── app.py
-├── kokoro_tts.py
-└── tes.wav
+├── hasil.wav
+└── tes.py
+```
+
 ```

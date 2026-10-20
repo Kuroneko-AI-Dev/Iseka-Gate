@@ -36,7 +36,7 @@ export default function PremiumModal({
 
                     <div className="premium-price">
 
-                        Rp 9.000
+                        Rp.0
 
                     </div>
 

@@ -19,7 +19,8 @@ from fastapi import Request
 from models import (
     User,
     Conversation,
-    Message
+    Message,
+    VisionMemory
 )
 from routers.live import router as live_router
 from security import get_current_user
@@ -33,7 +34,7 @@ import asyncio
 from pydantic import BaseModel
 from live.ai_worker import start_ai_worker
 from translator import translate_jp_to_id
-from kokoro_tts import generate_kokoro_tts
+from super_tonic_tts import generate_supertonic_tts
 from tools.research import research
 from tool_router import choose_tool
 from tool_manager import run_tool
@@ -59,7 +60,6 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://wash-mines-psychological-demonstrated.trycloudflare.com",
         "http://192.168.1.5:5173",
         "https://isekaiport.pages.dev"
         
@@ -151,9 +151,11 @@ async def chat(
     print("=== CHAT REQUEST ===")
     print("MESSAGE:", data.message)
     print("VISION:", data.vision)
+
+    vision_memory_text = ""
     # ============================
-    # Conversation
-    # ============================
+# Conversation
+# ============================
 
     if data.conversation_id is None:
 
@@ -175,11 +177,44 @@ async def chat(
             Conversation.user_id == current_user.id
         ).first()
 
+
         if not conversation:
             raise HTTPException(
                 status_code=404,
                 detail="Conversation not found"
             )
+
+
+
+    # ============================
+    # Vision Memory
+    # ============================
+
+    if data.vision:
+
+        vision_memory = VisionMemory(
+
+            user_id=current_user.id,
+
+            conversation_id=conversation.id,
+
+            camera=data.vision.camera,
+
+            caption=data.vision.caption,
+
+            objects=str(
+                data.vision.objects
+            ),
+
+            ocr_text=data.vision.text
+
+        )
+
+
+        db.add(vision_memory)
+        db.commit()
+    
+
 
     # ============================
     # Simpan pesan user
@@ -231,33 +266,9 @@ Gunakan gaya tersebut saat menjawab.
             "content": m.content
         })
 
-# ============================
-# Vision Context
-# ============================
-    if data.vision:
 
-        vision_data = data.vision
 
-        vision_prompt = f"""
-    Informasi kamera saat ini:
-
-    Objek:
-    {", ".join([obj.name for obj in vision_data.objects])}
-
-    Caption:
-    {vision_data.caption}
-
-    Jawab pertanyaan user berdasarkan informasi kamera ini.
-    """
-
-        chat_history.insert(
-            -1,
-            {
-                "role":"user",
-                "content":vision_prompt
-            }
-        )
-    print("LLM done")
+   
 
     tts_mode = "auto"
     tts_notice = None
@@ -325,8 +336,55 @@ Sebutkan sumber bila memungkinkan.
                 })
 
 
+# ============================
+# Vision Memory
+# ===========================
+
+    vision_memories = (
+        db.query(VisionMemory)
+        .filter(
+            VisionMemory.user_id == current_user.id
+        )
+        .order_by(
+            VisionMemory.created_at.desc()
+        )
+        .limit(5)
+        .all()
+    )
 
 
+    if vision_memories:
+
+        vision_memory_text = """
+    Previous things seen from camera:
+
+    """
+
+        for vm in vision_memories:
+
+            vision_memory_text += f"""
+    Camera: {vm.camera}
+
+    Description:
+    {vm.caption}
+
+    Objects:
+    {vm.objects}
+
+    Text:
+    {vm.ocr_text}
+
+    ---
+    """
+    if vision_memory_text:
+
+        chat_history.insert(
+            0,
+            {
+                "role":"system",
+                "content":vision_memory_text
+            }
+        )
     # ============================
     # LLM
     # ============================
@@ -339,10 +397,11 @@ Sebutkan sumber bila memungkinkan.
 
     print("==========================")
     answer = ask_gpt(
-        chat_history,
-        mode="normal"
+        messages=chat_history,
+        vision=data.vision
     )
-
+    
+    print("llm done")
     # ============================
     # TTS
     # ============================
@@ -364,12 +423,12 @@ Sebutkan sumber bila memungkinkan.
         print("GEMINI FAILED")
         print(e)
 
-        print("=== SWITCH TO KOKORO ===")
+        print("=== SWITCH TO SUPERTONIC ===")
 
-        tts_mode = "kokoro"
-        tts_provider = "kokoro"
+        tts_mode = "supertonic"
+        tts_provider = "supertonic"
 
-        audio_file = generate_kokoro_tts(answer)
+        audio_file = generate_supertonic_tts(answer)
 
     # ============================
     # Simpan jawaban AI
@@ -510,16 +569,24 @@ def delete_conversation(
     db.query(
         Message
     ).filter(
-
         Message.conversation_id == id
+    ).delete(
+        synchronize_session=False
+    )
 
-    ).delete()
+
+    db.query(
+        VisionMemory
+    ).filter(
+        VisionMemory.conversation_id == id
+    ).delete(
+        synchronize_session=False
+    )
 
 
     db.delete(conversation)
 
     db.commit()
-
 
     return {
 

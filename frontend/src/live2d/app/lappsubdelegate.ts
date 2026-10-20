@@ -240,11 +240,15 @@ export class LAppSubdelegate {
   public getGl(): WebGLRenderingContext | WebGL2RenderingContext {
     return this._glManager.getGl();
   }
-
+  
+ 
   public getLive2DManager(): LAppLive2DManager {
     return this._live2dManager;
   }
 
+  public getView(): LAppView {
+    return this._view;
+  }
   /**
    * Resize the canvas to fill the screen.
    */
